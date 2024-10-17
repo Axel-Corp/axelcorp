@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programme Python - Factorielle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Programme Python - Calcul de la Factorielle</h1>
+    <p>Voici un programme simple qui calcule la factorielle d'un nombre :</p>
+    
+    <h2>Code :</h2>
+    <pre>
+def factorielle(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorielle(n - 1)
+
+# Exemple d'utilisation
+nombre = 5
+resultat = factorielle(nombre)
+print(f"La factorielle de {nombre} est {resultat}")
+    </pre>
+
+    <h2>Comment l'utiliser :</h2>
+    <ol>
+        <li>Copia le code ci-dessus dans un fichier nommé <code>factorielle.py</code>.</li>
+        <li>Exécute le fichier en utilisant la commande : <code>python factorielle.py</code>.</li>
+    </ol>
+</body>
+</html>
