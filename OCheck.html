@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCheck - Logiciel d'Overclocking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: square;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .warning {
+            font-size: 24px;
+            font-weight: bold;
+            color: red;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>OCheck - Logiciel d'Overclocking</h1>
+        <p>OCheck est un logiciel d'overclocking conçu pour vous permettre d'optimiser les performances de votre processeur et de votre carte graphique en ajustant les paramètres de fréquence et de tension. Le logiciel propose deux modes : automatique et manuel. En mode automatique, OCheck analyse votre matériel et vous recommande des paramètres adaptés, tandis qu'en mode manuel, vous pouvez ajuster finement chaque paramètre pour obtenir des performances maximales.</p>
+
+        <p>Cependant, il est important de noter que l'overclocking peut entraîner des risques pour la stabilité et la longévité de vos composants si les paramètres sont mal configurés. OCheck inclut des outils de surveillance en temps réel des températures et des performances, vous aidant ainsi à gérer les risques et à maintenir la stabilité de votre système pendant l'overclocking.</p>
+
+        <!-- Avertissement -->
+        <p class="warning">Attention ! Ce logiciel peut avoir des résultats faux. Merci de vous référencer sur d'autres sites avant d'overclocker.</p>
+
+        <h2>Fonctionnalités Principales :</h2>
+        <ul>
+            <li><strong>Overclocking Automatique :</strong> OCheck analyse automatiquement votre système et recommande des réglages d'overclocking adaptés pour améliorer les performances.</li>
+            <li><strong>Overclocking Manuel :</strong> Vous avez la possibilité de personnaliser chaque paramètre d'overclocking (fréquences, tensions) selon vos besoins et votre configuration.</li>
+            <li><strong>Suivi des Performances et Stabilité :</strong> OCheck surveille les températures, la consommation d'énergie et la stabilité de votre système pendant l'overclocking, vous avertissant si les valeurs deviennent trop élevées.</li>
+            <li><strong>Réinitialisation des Paramètres :</strong> Vous pouvez facilement revenir aux paramètres par défaut si nécessaire, garantissant la sécurité et la stabilité de votre système.</li>
+            <li><strong>Rapports détaillés :</strong> OCheck génère des rapports complets sur les performances et la stabilité de votre système, que vous pouvez consulter à tout moment.</li>
+        </ul>
+
+        <h2>Technologies Utilisées :</h2>
+        <ul>
+            <li><strong>Python</strong> : Langage de programmation utilisé pour le développement de l'application, offrant une grande flexibilité et une compatibilité avec différents systèmes.</li>
+            <li><strong>Tkinter</strong> : Bibliothèque graphique pour créer l'interface utilisateur. Elle permet de créer une interface simple et intuitive pour l'utilisateur.</li>
+            <li><strong>Open Hardware Monitor (OHM)</strong> : Outil puissant pour surveiller les températures, tensions et autres informations cruciales de votre matériel. Il permet à OCheck d'afficher des données en temps réel et de vérifier la stabilité du système pendant l'overclocking.</li>
+        </ul>
+
+        <h2>Avantages :</h2>
+        <ul>
+            <li>Optimise les performances de votre système pour des tâches exigeantes telles que les jeux vidéo, le rendu graphique ou les calculs scientifiques.</li>
+            <li>Offre un contrôle total sur les paramètres d'overclocking tout en assurant la sécurité du système grâce à la surveillance constante de la température et de la stabilité.</li>
+            <li>Permet d'améliorer la vitesse d'exécution des applications sans compromis sur la stabilité, ce qui est idéal pour les utilisateurs recherchant des performances maximales.</li>
+            <li>Réduit la consommation d'énergie tout en augmentant les performances si bien configuré.</li>
+        </ul>
+
+        <h3>Installation des Dépendances :</h3>
+        <p>Avant d'exécuter OCheck, vous devez installer les dépendances nécessaires. Utilisez les commandes suivantes pour installer <strong>Open Hardware Monitor</strong> et <strong>Tkinter</strong> :</p>
+        <pre>
+        # Pour installer Open Hardware Monitor
+        pip install OpenHardwareMonitor
+
+        # Pour installer Tkinter
+        pip install tk
+        </pre>
+
+        <h3>Le télécharger</h3>
+        <ul>
+            <li><a href="OCheck.py" download> Télécharger OCheck</a></li>
+        </ul>
+    </div>
+
+</body>
+</html>
