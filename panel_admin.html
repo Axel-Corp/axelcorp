@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrateur AxelCorp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        .downloads {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .downloads button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .downloads button:hover {
+            background-color: #555;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Panel Administrateur AxelCorp</h1>
+    <div class="downloads">
+        <button onclick="trackDownload('Program1')">Télécharger Program1</button>
+        <button onclick="trackDownload('Program2')">Télécharger Program2</button>
+        <button onclick="trackDownload('Program3')">Télécharger Program3</button>
+    </div>
+    <h2>Statistiques des Téléchargements</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Programme</th>
+                <th>Téléchargements</th>
+            </tr>
+        </thead>
+        <tbody id="stats-body">
+            <!-- Les statistiques seront insérées ici -->
+        </tbody>
+    </table>
+    <script>
+        // Vérifie si l'utilisateur est connecté (basé sur une session simulée)
+        if (!localStorage.getItem("loggedIn")) {
+            alert("Vous devez être connecté pour accéder à cette page.");
+            window.location.href = "index.html"; // Redirige vers la page de connexion
+        }
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1BVQ1K925Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1BVQ1K925Z');
+</script>

@@ -48,6 +48,23 @@
         .discord-button:hover {
             background: linear-gradient(90deg, #5865f2, #7289da);
         }
+
+        /* Bouton de connexion en haut à droite */
+        .login-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+        .login-button:hover {
+            background-color: #3e4f61;
+        }
+
         .hidden {
             display: none
         }
@@ -57,10 +74,12 @@
     </style>
 </head>
 <body>
+    <a href="login.html" class="login-button">Connexion</a> <!-- Bouton de connexion -->
+
     <h1>Bienvenue sur Axel Corp</h1>
     <h2>Programmes Python à télécharger</h2>
     <h4 class="tkinter">Attention ! Nos Logiciels sont sous tkinter. Il faut l'installer via cette commande : pip install tk</h4>
-    <h4 class="tkinter"> Merci de mettre tous vos logiciels de la Axel Corp dans le même dossier : Documents/AxelCorp</h4>
+    <h4 class="tkinter">Merci de mettre tous vos logiciels de la Axel Corp dans le même dossier : Documents/AxelCorp</h4>
     <h4>Notre support Technique est sur Discord</h4>
 
     <div class="program-links">
@@ -74,8 +93,8 @@
     <!-- Bouton Discord en HTML avec style -->
     <a href="https://discord.gg/wztuKaWdSZ" target="_blank" class="discord-button">Rejoindre le Discord</a>
 
-<div class="hidden">
-# Si tu es la ça vuet dire que tu fouille mon site ?! Bon. Mon  serv pref en ascii
+    <div class="hidden">
+        # Si tu es là ça veut dire que tu fouilles mon site ?! Bon. Mon serv préf en ascii
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -133,8 +152,15 @@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 Le discord : https://discord.gg/TtJpkwFxfm
-</div> 
-
-    
+    </div>
 </body>
 </html>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1BVQ1K925Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1BVQ1K925Z');
+</script>
