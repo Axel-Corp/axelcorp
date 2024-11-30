@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
@@ -67,7 +67,7 @@
 
 <body>
     <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCKQ5BNR"
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCKQ5BNR"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <h1>Panel Administrateur AxelCorp</h1>
@@ -88,13 +88,61 @@
             <!-- Les statistiques seront insérées ici -->
         </tbody>
     </table>
+
+    <!-- Script pour interagir avec Google Analytics via l'API -->
     <script>
-        // Vérifie si l'utilisateur est connecté (basé sur une session simulée)
-        if (!localStorage.getItem("loggedIn")) {
-            alert("Vous devez être connecté pour accéder à cette page.");
-            window.location.href = "index.html"; // Redirige vers la page de connexion
+        // Fonction d'authentification OAuth 2.0 (à configurer)
+        function authenticateGoogleAPI() {
+            // Authentifier l'utilisateur et obtenir le token OAuth 2.0
+            // Vous devez configurer OAuth 2.0 et récupérer le token d'accès ici
+            // Exemple : gapi.auth2.getAuthInstance().signIn()
         }
+
+        // Récupérer les données de Google Analytics
+        function fetchAnalyticsData() {
+            // Exemple d'initialisation de l'API Analytics (en utilisant gapi client)
+            gapi.client.load('analytics', 'v3', function() {
+                gapi.client.analytics.data.ga.get({
+                    'ids': 'ga:YOUR_VIEW_ID', // Remplacez par votre ID de vue Google Analytics
+                    'start-date': '30daysAgo',
+                    'end-date': 'today',
+                    'metrics': 'ga:totalEvents',
+                    'dimensions': 'ga:eventCategory',
+                    'filters': 'ga:eventCategory==Téléchargement'
+                }).then(function(response) {
+                    const downloads = response.result.rows;
+                    const tbody = document.getElementById('stats-body');
+                    downloads.forEach(function(download) {
+                        const row = document.createElement('tr');
+                        const programmeCell = document.createElement('td');
+                        programmeCell.textContent = download[0]; // Event Category (Nom du programme)
+                        const countCell = document.createElement('td');
+                        countCell.textContent = download[1]; // Total Downloads (Total des événements)
+                        row.appendChild(programmeCell);
+                        row.appendChild(countCell);
+                        tbody.appendChild(row);
+                    });
+                }, function(error) {
+                    console.log('Erreur de récupération des données Analytics', error);
+                });
+            });
+        }
+
+        // Initialiser Google API et récupérer les données après l'authentification
+        function initGoogleAnalytics() {
+            gapi.client.setApiKey('YOUR_API_KEY'); // Remplacez par votre clé API
+            fetchAnalyticsData();
+        }
+
+        // Appeler l'API lorsque la page est chargée
+        window.onload = function() {
+            authenticateGoogleAPI();
+            initGoogleAnalytics();
+        };
     </script>
+
+    <!-- Inclure la bibliothèque Google API Client -->
+    <script src="https://apis.google.com/js/client.js?onload=initGoogleAnalytics"></script>
 
     <script src="script.js"></script>
 </body>
