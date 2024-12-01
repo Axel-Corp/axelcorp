@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soumettre un Ticket de Support</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .ticket-form {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .ticket-form label {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .ticket-form input, .ticket-form textarea, .ticket-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .ticket-form button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .ticket-form button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Soumettre un Ticket de Support</h1>
+    <div class="ticket-form">
+        <form id="ticketForm">
+            <label for="problem">Type de Problème :</label>
+            <select id="problem" required>
+                <option value="">Sélectionnez un problème</option>
+                <option value="connexion">Problème de connexion</option>
+                <option value="licence">Problème de licence</option>
+                <option value="erreur">Erreur système</option>
+                <option value="autre">Autre</option>
+            </select>
+
+            <label for="description">Description du Problème :</label>
+            <textarea id="description" rows="4" required></textarea>
+
+            <label for="message">Message :</label>
+            <textarea id="message" rows="5" required></textarea>
+
+            <button type="submit">Soumettre le Ticket</button>
+        </form>
+    </div>
+
+    <script>
+        // Fonction pour générer un ticket et l'enregistrer dans localStorage
+        document.getElementById('ticketForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            const problem = document.getElementById('problem').value;
+            const description = document.getElementById('description').value;
+            const message = document.getElementById('message').value;
+
+            if (problem && description && message) {
+                // Crée un ID unique pour le ticket
+                const ticketId = 'TCK' + Date.now();
+                const client = 'Client ' + Math.floor(Math.random() * 1000); // ID client simulé
+
+                // Crée un ticket
+                const ticket = {
+                    ticketId: ticketId,
+                    client: client,
+                    problem: problem,
+                    description: description,
+                    message: message,
+                    status: 'Ouvert',
+                    openDate: new Date().toLocaleDateString(),
+                    closeDate: 'N/A'
+                };
+
+                // Sauvegarde le ticket dans localStorage
+                let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+                tickets.push(ticket);
+                localStorage.setItem('tickets', JSON.stringify(tickets));
+
+                alert('Ticket soumis avec succès !');
+
+                // Réinitialise le formulaire
+                document.getElementById('ticketForm').reset();
+            } else {
+                alert('Veuillez remplir tous les champs');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,111 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PCKQ1K925Z');</script>
-    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Bord AxelCorp</title>
+    <title>Tableau de bord - Administrateur</title>
     <style>
+        /* Styles globaux */
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-            color: #333;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
         }
 
-        h1, h2 {
+        /* Style du titre */
+        h3 {
             text-align: center;
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 40px;
         }
 
-        table {
-            margin: 20px auto;
-            border-collapse: collapse;
-            width: 80%;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #333;
+        /* Style du conteneur principal */
+        .buttonadmin {
+            font-size: 18px;
+            padding: 15px 30px;
+            background-color: #2c3e50;
             color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style pour l'effet de survol */
+        .buttonadmin:hover {
+            background-color: #34495e;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px); /* Légère élévation lors du survol */
+        }
+
+        /* Style de texte */
+        .buttonadmin:focus {
+            outline: none;
         }
     </style>
 </head>
-
 <body>
-    <h1>Tableau de Bord AxelCorp</h1>
-    <h2>Statistiques des Téléchargements</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Événement</th>
-                <th>Nombre</th>
-            </tr>
-        </thead>
-        <tbody id="analytics-data">
-            <!-- Les données seront injectées ici -->
-        </tbody>
-    </table>
-
-    <!-- Script pour interagir avec Google Analytics Data API -->
-    <script>
-        async function fetchGA4Data() {
-            const apiKey = 'AIzaSyDtuRxxX6yExZG61zMUVWS5ni0zdlUlJz8'; // Remplacez par votre clé API.
-            const propertyId = '468989119'; // Remplacez par votre ID de propriété (par ex. 10001433591).
-
-            try {
-                // URL pour accéder à l'API Google Analytics Data
-                const url = `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport?key=${apiKey}`;
-
-                // Configuration de la requête POST
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        dimensions: [{ name: 'eventName' }], // Nom des événements
-                        metrics: [{ name: 'eventCount' }], // Nombre total d'événements
-                        dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
-                    }),
-                });
-
-                // Extraction des données de la réponse
-                const data = await response.json();
-
-                // Vérification des résultats
-                if (data && data.rows) {
-                    const tableBody = document.getElementById('analytics-data');
-                    data.rows.forEach(row => {
-                        const tr = document.createElement('tr');
-                        const eventName = document.createElement('td');
-                        const eventCount = document.createElement('td');
-                        eventName.textContent = row.dimensionValues[0].value; // Nom de l'événement
-                        eventCount.textContent = row.metricValues[0].value; // Nombre d'occurrences
-                        tr.appendChild(eventName);
-                        tr.appendChild(eventCount);
-                        tableBody.appendChild(tr);
-                    });
-                } else {
-                    console.error('Aucune donnée trouvée.', data);
-                }
-            } catch (error) {
-                console.error('Erreur lors de la récupération des données:', error);
-            }
-        }
-
-        // Appeler la fonction au chargement de la page
-        window.onload = fetchGA4Data;
-    </script>
+    <!-- Titre centré en haut de la page -->
+    <h3>Tableau de Bord Administrateur</h3>
+    <!-- Bouton avec un lien pour accéder à la gestion des tickets -->
+    <div>
+        <a href="ticket_admin.html" class="buttonadmin">Gestion des tickets</a>
+    </div>
 </body>
 </html>
