@@ -6,16 +6,15 @@
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PCKQ5BNR');</script>
+    })(window,document,'script','dataLayer','GTM-PCKQ1K925Z');</script>
     <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrateur AxelCorp</title>
+    <title>Tableau de Bord AxelCorp</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            padding: 0;
             background-color: #f9f9f9;
             color: #333;
         }
@@ -24,32 +23,10 @@
             text-align: center;
         }
 
-        .downloads {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .downloads button {
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .downloads button:hover {
-            background-color: #555;
-        }
-
         table {
-            margin: 0 auto;
+            margin: 20px auto;
             border-collapse: collapse;
             width: 80%;
-            max-width: 600px;
         }
 
         th, td {
@@ -66,84 +43,69 @@
 </head>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCKQ5BNR"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <h1>Panel Administrateur AxelCorp</h1>
-    <div class="downloads">
-        <button onclick="trackDownload('Program1')">Télécharger Program1</button>
-        <button onclick="trackDownload('Program2')">Télécharger Program2</button>
-        <button onclick="trackDownload('Program3')">Télécharger Program3</button>
-    </div>
+    <h1>Tableau de Bord AxelCorp</h1>
     <h2>Statistiques des Téléchargements</h2>
     <table>
         <thead>
             <tr>
-                <th>Programme</th>
-                <th>Téléchargements</th>
+                <th>Événement</th>
+                <th>Nombre</th>
             </tr>
         </thead>
-        <tbody id="stats-body">
-            <!-- Les statistiques seront insérées ici -->
+        <tbody id="analytics-data">
+            <!-- Les données seront injectées ici -->
         </tbody>
     </table>
 
-    <!-- Script pour interagir avec Google Analytics via l'API -->
+    <!-- Script pour interagir avec Google Analytics Data API -->
     <script>
-        // Fonction d'authentification OAuth 2.0 (à configurer)
-        function authenticateGoogleAPI() {
-            // Authentifier l'utilisateur et obtenir le token OAuth 2.0
-            // Vous devez configurer OAuth 2.0 et récupérer le token d'accès ici
-            // Exemple : gapi.auth2.getAuthInstance().signIn()
-        }
+        async function fetchGA4Data() {
+            const apiKey = 'AIzaSyDtuRxxX6yExZG61zMUVWS5ni0zdlUlJz8'; // Remplacez par votre clé API.
+            const propertyId = '468989119'; // Remplacez par votre ID de propriété (par ex. 10001433591).
 
-        // Récupérer les données de Google Analytics
-        function fetchAnalyticsData() {
-            // Exemple d'initialisation de l'API Analytics (en utilisant gapi client)
-            gapi.client.load('analytics', 'v3', function() {
-                gapi.client.analytics.data.ga.get({
-                    'ids': 'ga:YOUR_VIEW_ID', // Remplacez par votre ID de vue Google Analytics
-                    'start-date': '30daysAgo',
-                    'end-date': 'today',
-                    'metrics': 'ga:totalEvents',
-                    'dimensions': 'ga:eventCategory',
-                    'filters': 'ga:eventCategory==Téléchargement'
-                }).then(function(response) {
-                    const downloads = response.result.rows;
-                    const tbody = document.getElementById('stats-body');
-                    downloads.forEach(function(download) {
-                        const row = document.createElement('tr');
-                        const programmeCell = document.createElement('td');
-                        programmeCell.textContent = download[0]; // Event Category (Nom du programme)
-                        const countCell = document.createElement('td');
-                        countCell.textContent = download[1]; // Total Downloads (Total des événements)
-                        row.appendChild(programmeCell);
-                        row.appendChild(countCell);
-                        tbody.appendChild(row);
-                    });
-                }, function(error) {
-                    console.log('Erreur de récupération des données Analytics', error);
+            try {
+                // URL pour accéder à l'API Google Analytics Data
+                const url = `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport?key=${apiKey}`;
+
+                // Configuration de la requête POST
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        dimensions: [{ name: 'eventName' }], // Nom des événements
+                        metrics: [{ name: 'eventCount' }], // Nombre total d'événements
+                        dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+                    }),
                 });
-            });
+
+                // Extraction des données de la réponse
+                const data = await response.json();
+
+                // Vérification des résultats
+                if (data && data.rows) {
+                    const tableBody = document.getElementById('analytics-data');
+                    data.rows.forEach(row => {
+                        const tr = document.createElement('tr');
+                        const eventName = document.createElement('td');
+                        const eventCount = document.createElement('td');
+                        eventName.textContent = row.dimensionValues[0].value; // Nom de l'événement
+                        eventCount.textContent = row.metricValues[0].value; // Nombre d'occurrences
+                        tr.appendChild(eventName);
+                        tr.appendChild(eventCount);
+                        tableBody.appendChild(tr);
+                    });
+                } else {
+                    console.error('Aucune donnée trouvée.', data);
+                }
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données:', error);
+            }
         }
 
-        // Initialiser Google API et récupérer les données après l'authentification
-        function initGoogleAnalytics() {
-            gapi.client.setApiKey('YOUR_API_KEY'); // Remplacez par votre clé API
-            fetchAnalyticsData();
-        }
-
-        // Appeler l'API lorsque la page est chargée
-        window.onload = function() {
-            authenticateGoogleAPI();
-            initGoogleAnalytics();
-        };
+        // Appeler la fonction au chargement de la page
+        window.onload = fetchGA4Data;
     </script>
-
-    <!-- Inclure la bibliothèque Google API Client -->
-    <script src="https://apis.google.com/js/client.js?onload=initGoogleAnalytics"></script>
-
-    <script src="script.js"></script>
 </body>
 </html>
