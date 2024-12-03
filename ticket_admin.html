@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Administrateur - Gestion des Tickets</title>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script> <!-- Ajout de la bibliothèque EmailJS -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -132,6 +133,9 @@
     </div>
 
     <script>
+        // Initialise EmailJS avec ton User ID
+        emailjs.init('TON_USER_ID');
+
         // Fonction pour récupérer les tickets depuis localStorage
         function getTickets() {
             return JSON.parse(localStorage.getItem('tickets')) || [];
@@ -203,7 +207,7 @@
             alert('Le ticket a été fermé.');
         }
 
-        // Fonction pour envoyer une réponse
+        // Fonction pour envoyer une réponse avec EmailJS
         document.getElementById('send-response').addEventListener('click', () => {
             const email = document.getElementById('response-email').value;
             const message = document.getElementById('response-message').value;
@@ -213,8 +217,20 @@
                 return;
             }
 
-            alert(`Réponse envoyée à ${email} :\n\n${message}`);
-            document.getElementById('response-message').value = ''; // Réinitialise le message
+            const emailParams = {
+                to_email: email,
+                message: message
+            };
+
+            emailjs.send('service_5jha97q', 'service_5jha97q', emailParams)
+                .then(() => {
+                    alert(`Réponse envoyée à ${email} avec succès !`);
+                    document.getElementById('response-message').value = ''; // Réinitialise le message
+                })
+                .catch((error) => {
+                    alert('Erreur lors de l\'envoi de l\'email. Réessayez plus tard.');
+                    console.error('EmailJS Error:', error);
+                });
         });
 
         // Initialisation : affiche les tickets au chargement de la page
