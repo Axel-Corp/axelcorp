@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Administrateur - Gestion des Tickets</title>
-    <script src="https://cdn.emailjs.com/dist/email.min.js?ver=3.2.0"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -127,15 +126,17 @@
     <!-- Section pour répondre à un ticket -->
     <div id="response-section">
         <h3>Répondre au Ticket</h3>
-        <input type="email" id="response-email" placeholder="Email du client" readonly>
-        <textarea id="response-message" rows="5" placeholder="Écrivez votre réponse ici..."></textarea>
-        <button id="send-response">Envoyer la réponse</button>
+        <form action="https://formsubmit.co/votre-email@example.com" method="POST">
+            <input type="email" id="response-email" name="email" placeholder="Email du client" readonly required>
+            <textarea id="response-message" name="message" rows="5" placeholder="Écrivez votre réponse ici..." required></textarea>
+            <!-- Champ caché pour la redirection après soumission -->
+            <input type="hidden" name="_next" value="https://ton-site.com/merci.html">
+            <input type="hidden" name="_captcha" value="false">
+            <button type="submit">Envoyer la réponse</button>
+        </form>
     </div>
 
     <script>
-        // Initialise EmailJS avec ton User ID
-        emailjs.init('clwrPVOGJ_tVPw8OC');
-
         // Fonction pour récupérer les tickets depuis localStorage
         function getTickets() {
             return JSON.parse(localStorage.getItem('tickets')) || [];
@@ -193,7 +194,7 @@
             });
         }
 
-        // Fonction pour peupler le formulaire de réponse
+        // Fonction pour peupler le formulaire de réponse avec l'email du client
         function populateResponseForm(email) {
             document.getElementById('response-email').value = email;
         }
@@ -206,32 +207,6 @@
             updateTicketsTable();
             alert('Le ticket a été fermé.');
         }
-
-        // Fonction pour envoyer une réponse avec EmailJS
-        document.getElementById('send-response').addEventListener('click', () => {
-            const email = document.getElementById('response-email').value;
-            const message = document.getElementById('response-message').value;
-
-            if (!email || !message) {
-                alert('Veuillez remplir tous les champs avant d\'envoyer la réponse.');
-                return;
-            }
-
-            const emailParams = {
-                to_email: email,
-                message: message
-            };
-
-            emailjs.send('service_5jha97q', 'template_0rdotf1', emailParams)
-                .then(() => {
-                    alert(`Réponse envoyée à ${email} avec succès !`);
-                    document.getElementById('response-message').value = ''; // Réinitialise le message
-                })
-                .catch((error) => {
-                    alert('Erreur lors de l\'envoi de l\'email. Réessayez plus tard.');
-                    console.error('EmailJS Error:', error);
-                });
-        });
 
         // Initialisation : affiche les tickets au chargement de la page
         window.onload = updateTicketsTable;
