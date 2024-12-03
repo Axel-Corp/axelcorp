@@ -56,6 +56,9 @@
     <h1>Soumettre un Ticket de Support</h1>
     <div class="ticket-form">
         <form id="ticketForm">
+            <label for="email">Votre Email :</label>
+            <input type="email" id="email" placeholder="exemple@domaine.com" required>
+
             <label for="problem">Type de Problème :</label>
             <select id="problem" required>
                 <option value="">Sélectionnez un problème</option>
@@ -80,14 +83,15 @@
         document.getElementById('ticketForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Empêche le rechargement de la page
 
+            const email = document.getElementById('email').value;
             const problem = document.getElementById('problem').value;
             const description = document.getElementById('description').value;
             const message = document.getElementById('message').value;
 
-            if (problem && description && message) {
+            if (email && problem && description && message) {
                 // Crée un ID unique pour le ticket
                 const ticketId = 'TCK' + Date.now();
-                const client = 'Client ' + Math.floor(Math.random() * 1000); // ID client simulé
+                const client = email;
 
                 // Crée un ticket
                 const ticket = {
@@ -111,7 +115,7 @@
                 // Réinitialise le formulaire
                 document.getElementById('ticketForm').reset();
             } else {
-                alert('Veuillez remplir tous les champs');
+                alert('Veuillez remplir tous les champs.');
             }
         });
     </script>
