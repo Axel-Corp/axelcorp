@@ -1,57 +1,224 @@
-<table>
-    <thead>
-        <tr>
-            <th>Ticket ID</th>
-            <th>Client (Email)</th>
-            <th>Problème</th>
-            <th>Description</th>
-            <th>Statut</th>
-            <th>Date d'ouverture</th>
-            <th>Date de fermeture</th>
-        </tr>
-    </thead>
-    <tbody id="tickets-body">
-        <!-- Les données des tickets seront insérées ici -->
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrateur - Gestion des Tickets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
 
-<script>
-    // Fonction pour afficher les tickets dans le tableau
-    function updateTicketsTable() {
-        const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
-        const statsBody = document.getElementById('tickets-body');
-        statsBody.innerHTML = ''; // Vide le tableau avant de le mettre à jour
+        h1, h2 {
+            text-align: center;
+        }
 
-        tickets.forEach(ticket => {
-            const row = document.createElement('tr');
-            const ticketIdCell = document.createElement('td');
-            const clientCell = document.createElement('td');
-            const problemCell = document.createElement('td');
-            const descriptionCell = document.createElement('td');
-            const statusCell = document.createElement('td');
-            const openDateCell = document.createElement('td');
-            const closeDateCell = document.createElement('td');
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 90%;
+        }
 
-            ticketIdCell.textContent = ticket.ticketId;
-            clientCell.textContent = ticket.client; // Affiche l'email du client
-            problemCell.textContent = ticket.problem;
-            descriptionCell.textContent = ticket.description;
-            statusCell.textContent = ticket.status;
-            openDateCell.textContent = ticket.openDate;
-            closeDateCell.textContent = ticket.closeDate;
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
 
-            row.appendChild(ticketIdCell);
-            row.appendChild(clientCell);
-            row.appendChild(problemCell);
-            row.appendChild(descriptionCell);
-            row.appendChild(statusCell);
-            row.appendChild(openDateCell);
-            row.appendChild(closeDateCell);
+        th {
+            background-color: #2c3e50;
+            color: white;
+        }
 
-            statsBody.appendChild(row);
+        td {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            font-size: 14px;
+            color: white;
+            background-color: #2c3e50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #34495e;
+        }
+
+        .btn-repondre {
+            background-color: #27ae60;
+        }
+
+        .btn-repondre:hover {
+            background-color: #2ecc71;
+        }
+
+        .btn-fermer {
+            background-color: #e74c3c;
+        }
+
+        .btn-fermer:hover {
+            background-color: #c0392b;
+        }
+
+        #response-section {
+            margin: 20px auto;
+            max-width: 600px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #response-section h3 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #response-section input, #response-section textarea, #response-section button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #response-section button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #response-section button:hover {
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+    <h1>Panel Administrateur - Gestion des Tickets</h1>
+    <h2>Vue d'ensemble des tickets</h2>
+
+    <!-- Tableau des tickets -->
+    <table>
+        <thead>
+            <tr>
+                <th>Ticket ID</th>
+                <th>Client (Email)</th>
+                <th>Problème</th>
+                <th>Description</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="tickets-body">
+            <!-- Les données des tickets seront insérées ici -->
+        </tbody>
+    </table>
+
+    <!-- Section pour répondre à un ticket -->
+    <div id="response-section">
+        <h3>Répondre au Ticket</h3>
+        <input type="email" id="response-email" placeholder="Email du client" readonly>
+        <textarea id="response-message" rows="5" placeholder="Écrivez votre réponse ici..."></textarea>
+        <button id="send-response">Envoyer la réponse</button>
+    </div>
+
+    <script>
+        // Fonction pour récupérer les tickets depuis localStorage
+        function getTickets() {
+            return JSON.parse(localStorage.getItem('tickets')) || [];
+        }
+
+        // Fonction pour sauvegarder les tickets dans localStorage
+        function saveTickets(tickets) {
+            localStorage.setItem('tickets', JSON.stringify(tickets));
+        }
+
+        // Fonction pour afficher les tickets dans le tableau
+        function updateTicketsTable() {
+            const tickets = getTickets();
+            const statsBody = document.getElementById('tickets-body');
+            statsBody.innerHTML = ''; // Vide le tableau avant de le mettre à jour
+
+            tickets.forEach((ticket, index) => {
+                const row = document.createElement('tr');
+                const ticketIdCell = document.createElement('td');
+                const clientCell = document.createElement('td');
+                const problemCell = document.createElement('td');
+                const descriptionCell = document.createElement('td');
+                const statusCell = document.createElement('td');
+                const actionsCell = document.createElement('td');
+
+                ticketIdCell.textContent = ticket.ticketId;
+                clientCell.textContent = ticket.client;
+                problemCell.textContent = ticket.problem;
+                descriptionCell.textContent = ticket.description;
+                statusCell.textContent = ticket.status;
+
+                // Bouton pour répondre au ticket
+                const respondButton = document.createElement('button');
+                respondButton.textContent = 'Répondre';
+                respondButton.classList.add('btn', 'btn-repondre');
+                respondButton.onclick = () => populateResponseForm(ticket.client);
+
+                // Bouton pour fermer le ticket
+                const closeButton = document.createElement('button');
+                closeButton.textContent = 'Fermer';
+                closeButton.classList.add('btn', 'btn-fermer');
+                closeButton.onclick = () => closeTicket(index);
+
+                actionsCell.appendChild(respondButton);
+                actionsCell.appendChild(closeButton);
+
+                row.appendChild(ticketIdCell);
+                row.appendChild(clientCell);
+                row.appendChild(problemCell);
+                row.appendChild(descriptionCell);
+                row.appendChild(statusCell);
+                row.appendChild(actionsCell);
+
+                statsBody.appendChild(row);
+            });
+        }
+
+        // Fonction pour peupler le formulaire de réponse
+        function populateResponseForm(email) {
+            document.getElementById('response-email').value = email;
+        }
+
+        // Fonction pour fermer un ticket
+        function closeTicket(index) {
+            const tickets = getTickets();
+            tickets[index].status = 'Fermé';
+            saveTickets(tickets);
+            updateTicketsTable();
+            alert('Le ticket a été fermé.');
+        }
+
+        // Fonction pour envoyer une réponse
+        document.getElementById('send-response').addEventListener('click', () => {
+            const email = document.getElementById('response-email').value;
+            const message = document.getElementById('response-message').value;
+
+            if (!email || !message) {
+                alert('Veuillez remplir tous les champs avant d\'envoyer la réponse.');
+                return;
+            }
+
+            alert(`Réponse envoyée à ${email} :\n\n${message}`);
+            document.getElementById('response-message').value = ''; // Réinitialise le message
         });
-    }
 
-    // Appelle cette fonction au chargement de la page admin
-    window.onload = updateTicketsTable;
-</script>
+        // Initialisation : affiche les tickets au chargement de la page
+        window.onload = updateTicketsTable;
+    </script>
+</body>
+</html>
