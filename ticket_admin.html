@@ -130,13 +130,13 @@
     <div id="response-section">
         <h3>Répondre au Ticket</h3>
         <!-- Formulaire pour répondre au ticket -->
-        <form action="https://formsubmit.co/axelcorp@fastmail.com" method="POST">
+        <form id="response-form" action="https://formsubmit.co/axelcorp@fastmail.com" method="POST">
             <input type="email" id="response-email" name="email" placeholder="Email du client" readonly>
             <textarea id="response-message" name="message" rows="5" placeholder="Écrivez votre réponse ici..." required></textarea>
             <!-- Champ caché pour la redirection après soumission -->
             <input type="hidden" name="_next" value="https://ton-site.com/merci.html">
             <input type="hidden" name="_captcha" value="false">
-            <button type="submit">Envoyer la réponse</button>
+            <button type="submit" id="send-response">Envoyer la réponse</button>
         </form>
     </div>
 
@@ -189,6 +189,35 @@
         function populateResponseForm(ticketId, email) {
             document.getElementById('response-email').value = email;
             document.getElementById('response-message').value = '';  // Réinitialise le message
+            document.getElementById('response-form').onsubmit = function() {
+                sendResponse(ticketId); // Envoie la réponse à Firebase et le formulaire
+            };
+        }
+
+        // Fonction pour envoyer une réponse
+        async function sendResponse(ticketId) {
+            const message = document.getElementById('response-message').value;
+            const email = document.getElementById('response-email').value;
+
+            if (!message) {
+                alert('Veuillez écrire une réponse avant d\'envoyer.');
+                return;
+            }
+
+            // Envoi de la réponse dans Firebase
+            try {
+                const ticketRef = database.ref('tickets/' + ticketId);
+                await ticketRef.update({
+                    response: message,
+                    status: 'Répondu'
+                });
+
+                alert('Réponse envoyée avec succès à ' + email);
+                document.getElementById('response-message').value = ''; // Réinitialise le message
+            } catch (error) {
+                console.error('Erreur lors de l\'envoi de la réponse :', error);
+                alert('Une erreur est survenue. Veuillez réessayer.');
+            }
         }
 
         // Fonction pour fermer un ticket
