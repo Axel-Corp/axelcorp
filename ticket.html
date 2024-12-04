@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soumettre un Ticket de Support</title>
+    <title>Panel Administrateur - Gestion des Tickets</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,112 +13,219 @@
             color: #333;
         }
 
-        h1 {
+        h1, h2 {
             text-align: center;
         }
 
-        .ticket-form {
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 90%;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        td {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            font-size: 14px;
+            color: white;
+            background-color: #2c3e50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #34495e;
+        }
+
+        .btn-repondre {
+            background-color: #27ae60;
+        }
+
+        .btn-repondre:hover {
+            background-color: #2ecc71;
+        }
+
+        .btn-fermer {
+            background-color: #e74c3c;
+        }
+
+        .btn-fermer:hover {
+            background-color: #c0392b;
+        }
+
+        #response-section {
+            margin: 20px auto;
             max-width: 600px;
-            margin: auto;
             background: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .ticket-form label {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .ticket-form input, .ticket-form textarea, .ticket-form select {
-            width: 100%;
-            padding: 10px;
+        #response-section h3 {
             margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            text-align: center;
         }
 
-        .ticket-form button {
-            padding: 10px 20px;
-            background-color: #333;
+        #response-section input, #response-section textarea, #response-section button {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #response-section button {
+            background-color: #27ae60;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
+            border-radius: 5px;
         }
 
-        .ticket-form button:hover {
-            background-color: #555;
+        #response-section button:hover {
+            background-color: #2ecc71;
         }
     </style>
 </head>
 <body>
-    <h1>Soumettre un Ticket de Support</h1>
-    <div class="ticket-form">
-        <form id="ticketForm">
-            <label for="email">Votre Email :</label>
-            <input type="email" id="email" placeholder="exemple@domaine.com" required>
+    <h1>Panel Administrateur - Gestion des Tickets</h1>
+    <h2>Vue d'ensemble des tickets</h2>
 
-            <label for="problem">Type de Problème :</label>
-            <select id="problem" required>
-                <option value="">Sélectionnez un problème</option>
-                <option value="connexion">Problème de connexion</option>
-                <option value="licence">Problème de licence</option>
-                <option value="erreur">Erreur système</option>
-                <option value="autre">Autre</option>
-            </select>
+    <!-- Tableau des tickets -->
+    <table>
+        <thead>
+            <tr>
+                <th>Ticket ID</th>
+                <th>Client (Email)</th>
+                <th>Problème</th>
+                <th>Description</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="tickets-body">
+            <!-- Les données des tickets seront insérées ici -->
+        </tbody>
+    </table>
 
-            <label for="description">Description du Problème :</label>
-            <textarea id="description" rows="4" required></textarea>
-
-            <label for="message">Message :</label>
-            <textarea id="message" rows="5" required></textarea>
-
-            <button type="submit">Soumettre le Ticket</button>
-        </form>
+    <!-- Section pour répondre à un ticket -->
+    <div id="response-section" style="display: none;">
+        <h3>Répondre au Ticket</h3>
+        <input type="email" id="response-email" readonly>
+        <textarea id="response-message" rows="5" placeholder="Écrivez votre réponse ici..."></textarea>
+        <button id="send-response">Envoyer la réponse</button>
     </div>
 
     <script>
-        // Fonction pour générer un ticket et l'enregistrer dans localStorage
-        document.getElementById('ticketForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche le rechargement de la page
+        // Configuration de Supabase
+        const SUPABASE_URL = "https://lnybeadsjsjkgvghghw.supabase.co"; // Remplace par l'URL de ton projet Supabase
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxueWJlYWRzanNqa2d5dmhnaGh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMyNTkwODcsImV4cCI6MjA0ODgzNTA4N30.ugb1P5Y4jSIRGQLHR2gj66T7wV6wUw-J_IKquUh9m4c"; // Clé anonyme
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-            const email = document.getElementById('email').value;
-            const problem = document.getElementById('problem').value;
-            const description = document.getElementById('description').value;
-            const message = document.getElementById('message').value;
+        // Fonction pour récupérer les tickets depuis Supabase
+        async function fetchTickets() {
+            const { data: tickets, error } = await supabase
+                .from('tickets')
+                .select('*');
 
-            if (email && problem && description && message) {
-                // Crée un ID unique pour le ticket
-                const ticketId = 'TCK' + Date.now();
-                const client = email;
-
-                // Crée un ticket
-                const ticket = {
-                    ticketId: ticketId,
-                    client: client,
-                    problem: problem,
-                    description: description,
-                    message: message,
-                    status: 'Ouvert',
-                    openDate: new Date().toLocaleDateString(),
-                    closeDate: 'N/A'
-                };
-
-                // Sauvegarde le ticket dans localStorage
-                let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
-                tickets.push(ticket);
-                localStorage.setItem('tickets', JSON.stringify(tickets));
-
-                alert('Ticket soumis avec succès !');
-
-                // Réinitialise le formulaire
-                document.getElementById('ticketForm').reset();
-            } else {
-                alert('Veuillez remplir tous les champs.');
+            if (error) {
+                console.error('Erreur lors de la récupération des tickets :', error);
+                return;
             }
+
+            updateTicketsTable(tickets);
+        }
+
+        // Fonction pour afficher les tickets dans le tableau
+        function updateTicketsTable(tickets) {
+            const ticketsBody = document.getElementById('tickets-body');
+            ticketsBody.innerHTML = ''; // Vide le tableau avant de le remplir
+
+            tickets.forEach(ticket => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${ticket.id}</td>
+                    <td>${ticket.email}</td>
+                    <td>${ticket.problem}</td>
+                    <td>${ticket.description}</td>
+                    <td>${ticket.status}</td>
+                    <td>
+                        <button class="btn-repondre" onclick="showResponseForm('${ticket.id}', '${ticket.email}')">Répondre</button>
+                        <button class="btn-fermer" onclick="closeTicket('${ticket.id}')">Fermer</button>
+                    </td>
+                `;
+                ticketsBody.appendChild(row);
+            });
+        }
+
+        // Fonction pour afficher le formulaire de réponse
+        function showResponseForm(ticketId, email) {
+            document.getElementById('response-email').value = email;
+            document.getElementById('response-message').dataset.ticketId = ticketId;
+            document.getElementById('response-section').style.display = 'block';
+        }
+
+        // Fonction pour envoyer une réponse
+        document.getElementById('send-response').addEventListener('click', async () => {
+            const ticketId = document.getElementById('response-message').dataset.ticketId;
+            const responseMessage = document.getElementById('response-message').value;
+
+            if (!responseMessage) {
+                alert('Veuillez entrer un message avant d\'envoyer la réponse.');
+                return;
+            }
+
+            const { error } = await supabase
+                .from('tickets')
+                .update({ status: 'Répondu', response: responseMessage })
+                .eq('id', ticketId);
+
+            if (error) {
+                console.error('Erreur lors de l\'envoi de la réponse :', error);
+                alert('Impossible d\'envoyer la réponse.');
+                return;
+            }
+
+            alert('Réponse envoyée avec succès.');
+            fetchTickets();
+            document.getElementById('response-section').style.display = 'none';
         });
+
+        // Fonction pour fermer un ticket
+        async function closeTicket(ticketId) {
+            const { error } = await supabase
+                .from('tickets')
+                .update({ status: 'Fermé' })
+                .eq('id', ticketId);
+
+            if (error) {
+                console.error('Erreur lors de la fermeture du ticket :', error);
+                alert('Impossible de fermer le ticket.');
+                return;
+            }
+
+            alert('Ticket fermé avec succès.');
+            fetchTickets();
+        }
+
+        // Charger les tickets au démarrage
+        fetchTickets();
     </script>
 </body>
 </html>
