@@ -4,103 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des Tickets - Administrateur</title>
-    <!-- Ajouter le SDK Firebase version modulaire -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getDatabase, ref, update, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-
-        // Configuration de Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyDsQbhHjivqU4RaNpB0zwNpDj_ALq4u4Ww",
-            authDomain: "axel-corp.firebaseapp.com",
-            databaseURL: "https://axel-corp-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "axel-corp",
-            storageBucket: "axel-corp.firebasestorage.app",
-            messagingSenderId: "77227996486",
-            appId: "1:77227996486:web:2c733aa4feed4695062147"
-        };
-
-        // Initialiser Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        // Fonction pour afficher les tickets
-        async function displayTickets() {
-            const ticketsRef = ref(database, 'tickets');
-            onValue(ticketsRef, (snapshot) => {
-                const tickets = snapshot.val();
-                const ticketsBody = document.getElementById('tickets-body');
-                ticketsBody.innerHTML = ''; // Vide le tableau avant de le remplir
-
-                if (tickets) {
-                    Object.keys(tickets).forEach(ticketId => {
-                        const ticket = tickets[ticketId];
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${ticketId}</td>
-                            <td>${ticket.email}</td>
-                            <td>${ticket.problem}</td>
-                            <td>${ticket.description}</td>
-                            <td>${ticket.status}</td>
-                            <td>
-                                <button class="btn btn-repondre" onclick="populateResponseForm('${ticketId}', '${ticket.email}')">Répondre</button>
-                                <button class="btn btn-fermer" onclick="closeTicket('${ticketId}')">Fermer</button>
-                            </td>
-                        `;
-                        ticketsBody.appendChild(row);
-                    });
-                }
-            });
-        }
-
-        // Fonction pour peupler le formulaire de réponse avec l'email du client
-        function populateResponseForm(ticketId, email) {
-            document.getElementById('response-email').value = email;
-            document.getElementById('send-response').onclick = () => sendResponse(ticketId);
-        }
-
-        // Fonction pour envoyer une réponse
-        async function sendResponse(ticketId) {
-            const message = document.getElementById('response-message').value;
-            const email = document.getElementById('response-email').value;
-
-            if (!message) {
-                alert('Veuillez écrire une réponse avant d\'envoyer.');
-                return;
-            }
-
-            try {
-                const ticketRef = ref(database, 'tickets/' + ticketId);
-                await update(ticketRef, {
-                    response: message,
-                    status: 'Répondu'
-                });
-
-                alert('Réponse envoyée avec succès à ' + email);
-                document.getElementById('response-message').value = ''; // Réinitialise le message
-            } catch (error) {
-                console.error('Erreur lors de l\'envoi de la réponse :', error);
-                alert('Une erreur est survenue. Veuillez réessayer.');
-            }
-        }
-
-        // Fonction pour fermer un ticket
-        async function closeTicket(ticketId) {
-            const ticketRef = ref(database, 'tickets/' + ticketId);
-            try {
-                await update(ticketRef, {
-                    status: 'Fermé'
-                });
-                alert('Le ticket a été fermé.');
-            } catch (error) {
-                console.error('Erreur lors de la fermeture du ticket :', error);
-                alert('Une erreur est survenue lors de la fermeture du ticket.');
-            }
-        }
-
-        // Initialisation de l'affichage des tickets au chargement de la page
-        window.onload = displayTickets;
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -224,9 +129,84 @@
     <!-- Section pour répondre à un ticket -->
     <div id="response-section">
         <h3>Répondre au Ticket</h3>
-        <input type="email" id="response-email" placeholder="Email du client" readonly>
-        <textarea id="response-message" rows="5" placeholder="Écrivez votre réponse ici..."></textarea>
-        <button id="send-response">Envoyer la réponse</button>
+        <!-- Formulaire pour répondre au ticket -->
+        <form action="https://formsubmit.co/axelcorp@fastmail.com" method="POST">
+            <input type="email" id="response-email" name="email" placeholder="Email du client" readonly>
+            <textarea id="response-message" name="message" rows="5" placeholder="Écrivez votre réponse ici..." required></textarea>
+            <!-- Champ caché pour la redirection après soumission -->
+            <input type="hidden" name="_next" value="https://ton-site.com/merci.html">
+            <input type="hidden" name="_captcha" value="false">
+            <button type="submit">Envoyer la réponse</button>
+        </form>
     </div>
+
+    <script>
+        // Configuration de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsQbhHjivqU4RaNpB0zwNpDj_ALq4u4Ww",
+            authDomain: "axel-corp.firebaseapp.com",
+            databaseURL: "https://axel-corp-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "axel-corp",
+            storageBucket: "axel-corp.firebasestorage.app",
+            messagingSenderId: "77227996486",
+            appId: "1:77227996486:web:2c733aa4feed4695062147"
+        };
+
+        // Initialisation de Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Fonction pour afficher les tickets
+        async function displayTickets() {
+            const ticketsRef = database.ref('tickets');
+            ticketsRef.on('value', (snapshot) => {
+                const tickets = snapshot.val();
+                const ticketsBody = document.getElementById('tickets-body');
+                ticketsBody.innerHTML = ''; // Vide le tableau avant de le remplir
+
+                if (tickets) {
+                    Object.keys(tickets).forEach(ticketId => {
+                        const ticket = tickets[ticketId];
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${ticketId}</td>
+                            <td>${ticket.email}</td>
+                            <td>${ticket.problem}</td>
+                            <td>${ticket.description}</td>
+                            <td>${ticket.status}</td>
+                            <td>
+                                <button class="btn btn-repondre" onclick="populateResponseForm('${ticketId}', '${ticket.email}')">Répondre</button>
+                                <button class="btn btn-fermer" onclick="closeTicket('${ticketId}')">Fermer</button>
+                            </td>
+                        `;
+                        ticketsBody.appendChild(row);
+                    });
+                }
+            });
+        }
+
+        // Fonction pour peupler le formulaire de réponse avec l'email du client
+        function populateResponseForm(ticketId, email) {
+            document.getElementById('response-email').value = email;
+            document.getElementById('response-message').value = '';  // Réinitialise le message
+        }
+
+        // Fonction pour fermer un ticket
+        async function closeTicket(ticketId) {
+            const ticketRef = database.ref('tickets/' + ticketId);
+            try {
+                await ticketRef.update({
+                    status: 'Fermé'
+                });
+                alert('Le ticket a été fermé.');
+            } catch (error) {
+                console.error('Erreur lors de la fermeture du ticket :', error);
+                alert('Une erreur est survenue lors de la fermeture du ticket.');
+            }
+        }
+
+        // Initialisation de l'affichage des tickets au chargement de la page
+        window.onload = displayTickets;
+    </script>
 </body>
 </html>
