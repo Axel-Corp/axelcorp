@@ -4,9 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soumettre un Ticket</title>
-    <!-- Ajouter le SDK Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <!-- Ajouter le SDK Firebase avec la version modulaire -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsQbhHjivqU4RaNpB0zwNpDj_ALq4u4Ww",
+            authDomain: "axel-corp.firebaseapp.com",
+            databaseURL: "https://axel-corp-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "axel-corp",
+            storageBucket: "axel-corp.firebasestorage.app",
+            messagingSenderId: "77227996486",
+            appId: "1:77227996486:web:2c733aa4feed4695062147"
+        };
+
+        // Initialiser Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Fonction pour soumettre un ticket
+        async function submitTicket(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            const email = document.getElementById('email').value;
+            const problem = document.getElementById('problem').value;
+            const description = document.getElementById('description').value;
+
+            try {
+                // Référencer le chemin des tickets dans Firebase
+                const ticketRef = push(ref(database, 'tickets'));
+
+                // Ajouter un ticket dans Firebase Realtime Database
+                await set(ticketRef, {
+                    email: email,
+                    problem: problem,
+                    description: description,
+                    status: 'Ouvert',
+                    created_at: new Date().toISOString()
+                });
+
+                alert('Votre ticket a été soumis avec succès.');
+                document.getElementById('ticket-form').reset(); // Réinitialise le formulaire
+
+            } catch (error) {
+                console.error('Erreur lors de la soumission du ticket :', error);
+                alert('Une erreur est survenue. Veuillez réessayer.');
+            }
+        }
+
+        // Ajout de l'écouteur d'événement pour la soumission du formulaire
+        document.getElementById('ticket-form').addEventListener('submit', submitTicket);
+    </script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -62,55 +113,5 @@
         <textarea id="description" rows="5" placeholder="Description détaillée" required></textarea>
         <button type="submit">Envoyer le Ticket</button>
     </form>
-
-    <script>
-        // Configuration Firebase
-        const firebaseConfig = {
-  apiKey: "AIzaSyDsQbhHjivqU4RaNpB0zwNpDj_ALq4u4Ww",
-  authDomain: "axel-corp.firebaseapp.com",
-  databaseURL: "https://axel-corp-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "axel-corp",
-  storageBucket: "axel-corp.firebasestorage.app",
-  messagingSenderId: "77227996486",
-  appId: "1:77227996486:web:2c733aa4feed4695062147"
-};
-
-        // Initialiser Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        // Fonction pour soumettre un ticket
-        async function submitTicket(event) {
-            event.preventDefault(); // Empêche le rechargement de la page
-
-            const email = document.getElementById('email').value;
-            const problem = document.getElementById('problem').value;
-            const description = document.getElementById('description').value;
-
-            try {
-                // Référencer le chemin des tickets dans Firebase
-                const ticketRef = database.ref('tickets').push();
-
-                // Ajouter un ticket dans Firebase Realtime Database
-                await ticketRef.set({
-                    email: email,
-                    problem: problem,
-                    description: description,
-                    status: 'Ouvert',
-                    created_at: new Date().toISOString()
-                });
-
-                alert('Votre ticket a été soumis avec succès.');
-                document.getElementById('ticket-form').reset(); // Réinitialise le formulaire
-
-            } catch (error) {
-                console.error('Erreur lors de la soumission du ticket :', error);
-                alert('Une erreur est survenue. Veuillez réessayer.');
-            }
-        }
-
-        // Ajout de l'écouteur d'événement pour la soumission du formulaire
-        document.getElementById('ticket-form').addEventListener('submit', submitTicket);
-    </script>
 </body>
 </html>
