@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des Tickets - Administrateur</title>
 
-    <!-- Importer Firebase avec le type module -->
+    <!-- Charger Firebase avec type="module" -->
     <script type="module">
         // Importer les modules Firebase nécessaires
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
-        // Configuration de Firebase
+        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDsQbhHjivqU4RaNpB0zwNpDj_ALq4u4Ww",
             authDomain: "axel-corp.firebaseapp.com",
@@ -27,7 +27,7 @@
         const database = getDatabase(app);
 
         // Fonction pour afficher les tickets
-        async function displayTickets() {
+        function displayTickets() {
             const ticketsRef = ref(database, 'tickets');
             onValue(ticketsRef, (snapshot) => {
                 const tickets = snapshot.val();
@@ -92,17 +92,16 @@
         }
 
         // Fonction pour fermer un ticket
-        async function closeTicket(ticketId) {
+        function closeTicket(ticketId) {
             const ticketRef = ref(database, 'tickets/' + ticketId);
-            try {
-                await update(ticketRef, {
-                    status: 'Fermé'
-                });
+            update(ticketRef, {
+                status: 'Fermé'
+            }).then(() => {
                 alert('Le ticket a été fermé.');
-            } catch (error) {
+            }).catch((error) => {
                 console.error('Erreur lors de la fermeture du ticket :', error);
                 alert('Une erreur est survenue lors de la fermeture du ticket.');
-            }
+            });
         }
 
         // Initialisation de l'affichage des tickets au chargement de la page
