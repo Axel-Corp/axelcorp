@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soumettre un Ticket</title>
+    <!-- Charger le script de Supabase avant d'utiliser la variable supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
         body {
@@ -62,9 +63,9 @@
     </form>
 
     <script>
-        // Configuration de Supabase (Assurez-vous que cette section est définie avant toute autre action)
-        const SUPABASE_URL = "https://lnybeadsjsjkgvghghw.supabase.co"; // Remplace par ton URL Supabase
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxueWJlYWRzanNqa2d5dmhnaGh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMyNTkwODcsImV4cCI6MjA0ODgzNTA4N30.ugb1P5Y4jSIRGQLHR2gj66T7wV6wUw-J_IKquUh9m4c"; // Clé anonyme
+        // Initialisation de Supabase à ce moment-là après avoir chargé le script
+        const SUPABASE_URL = "https://lnybeadsjsjkgvghghw.supabase.co"; // Remplace par l'URL de ton projet Supabase
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxueWJlYWRzanNqa2d5dmhnaGh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMyNTkwODcsImV4cCI6MjA0ODgzNTA4N30.ugb1P5Y4jSIRGQLHR2gj66T7wV6wUw-J_IKquUh9m4c"; // Ta clé anonyme
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // Fonction pour soumettre un ticket
