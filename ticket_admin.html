@@ -3,23 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrateur - Gestion des Tickets</title>
+    <title>Gestion des Tickets - Supabase</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
             background-color: #f9f9f9;
             color: #333;
+            margin: 20px;
         }
 
-        h1, h2 {
+        h1 {
             text-align: center;
+            color: #2c3e50;
         }
 
         table {
-            margin: 20px auto;
+            width: 100%;
+            margin: 20px 0;
             border-collapse: collapse;
-            width: 90%;
         }
 
         th, td {
@@ -33,23 +35,12 @@
             color: white;
         }
 
-        td {
-            background-color: #f1f1f1;
-        }
-
-        .btn {
-            padding: 8px 15px;
-            font-size: 14px;
+        button {
+            padding: 8px 12px;
             color: white;
-            background-color: #2c3e50;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: #34495e;
         }
 
         .btn-repondre {
@@ -67,51 +58,16 @@
         .btn-fermer:hover {
             background-color: #c0392b;
         }
-
-        #response-section {
-            margin: 20px auto;
-            max-width: 600px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #response-section h3 {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        #response-section input, #response-section textarea, #response-section button {
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        #response-section button {
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        #response-section button:hover {
-            background-color: #2ecc71;
-        }
     </style>
 </head>
 <body>
-    <h1>Panel Administrateur - Gestion des Tickets</h1>
-    <h2>Vue d'ensemble des tickets</h2>
+    <h1>Gestion des Tickets</h1>
 
-    <!-- Tableau des tickets -->
     <table>
         <thead>
             <tr>
-                <th>Ticket ID</th>
-                <th>Client (Email)</th>
+                <th>ID</th>
+                <th>Email</th>
                 <th>Problème</th>
                 <th>Description</th>
                 <th>Statut</th>
@@ -119,97 +75,80 @@
             </tr>
         </thead>
         <tbody id="tickets-body">
-            <!-- Les données des tickets seront insérées ici -->
+            <!-- Les tickets seront affichés ici dynamiquement -->
         </tbody>
     </table>
 
-    <!-- Section pour répondre à un ticket -->
-    <div id="response-section">
-        <h3>Répondre au Ticket</h3>
-        <form action="https://formsubmit.co/axelcorp@fastmail.com" method="POST">
-            <input type="email" id="response-email" name="email" placeholder="Email du client" readonly required>
-            <textarea id="response-message" name="message" rows="5" placeholder="Écrivez votre réponse ici..." required></textarea>
-            <!-- Champ caché pour la redirection après soumission -->
-            <input type="hidden" name="_next" value="https://ton-site.com/merci.html">
-            <input type="hidden" name="_captcha" value="false">
-            <button type="submit">Envoyer la réponse</button>
-        </form>
-    </div>
-
     <script>
-        // Fonction pour récupérer les tickets depuis localStorage
-        function getTickets() {
-            return JSON.parse(localStorage.getItem('tickets')) || [];
-        }
+        // Configuration de Supabase
+        const SUPABASE_URL = "https://lnybeadsjsjkgyvhghhw.supabase.co"; // Remplace par ton URL de projet
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxueWJlYWRzanNqa2d5dmhnaGh3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczMzI1OTA4NywiZXhwIjoyMDQ4ODM1MDg3fQ.kYMC_cfAkaBi-hU4i4EHWCb1A_a1_4hrHo8Hoe9ZcUg"; // Remplace par ta clé anonyme
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Fonction pour sauvegarder les tickets dans localStorage
-        function saveTickets(tickets) {
-            localStorage.setItem('tickets', JSON.stringify(tickets));
+        // Fonction pour récupérer les tickets
+        async function fetchTickets() {
+            const { data: tickets, error } = await supabase
+                .from('tickets')
+                .select('*');
+            
+            if (error) {
+                console.error('Erreur lors de la récupération des tickets :', error);
+                return;
+            }
+
+            displayTickets(tickets);
         }
 
         // Fonction pour afficher les tickets dans le tableau
-        function updateTicketsTable() {
-            const tickets = getTickets();
-            const statsBody = document.getElementById('tickets-body');
-            statsBody.innerHTML = ''; // Vide le tableau avant de le mettre à jour
+        function displayTickets(tickets) {
+            const ticketsBody = document.getElementById('tickets-body');
+            ticketsBody.innerHTML = ''; // Effacer le contenu actuel du tableau
 
-            tickets.forEach((ticket, index) => {
+            tickets.forEach(ticket => {
                 const row = document.createElement('tr');
-                const ticketIdCell = document.createElement('td');
-                const clientCell = document.createElement('td');
-                const problemCell = document.createElement('td');
-                const descriptionCell = document.createElement('td');
-                const statusCell = document.createElement('td');
-                const actionsCell = document.createElement('td');
-
-                ticketIdCell.textContent = ticket.ticketId;
-                clientCell.textContent = ticket.client;
-                problemCell.textContent = ticket.problem;
-                descriptionCell.textContent = ticket.description;
-                statusCell.textContent = ticket.status;
-
-                // Bouton pour répondre au ticket
-                const respondButton = document.createElement('button');
-                respondButton.textContent = 'Répondre';
-                respondButton.classList.add('btn', 'btn-repondre');
-                respondButton.onclick = () => populateResponseForm(ticket.client);
-
-                // Bouton pour fermer le ticket
-                const closeButton = document.createElement('button');
-                closeButton.textContent = 'Fermer';
-                closeButton.classList.add('btn', 'btn-fermer');
-                closeButton.onclick = () => closeTicket(index);
-
-                actionsCell.appendChild(respondButton);
-                actionsCell.appendChild(closeButton);
-
-                row.appendChild(ticketIdCell);
-                row.appendChild(clientCell);
-                row.appendChild(problemCell);
-                row.appendChild(descriptionCell);
-                row.appendChild(statusCell);
-                row.appendChild(actionsCell);
-
-                statsBody.appendChild(row);
+                row.innerHTML = `
+                    <td>${ticket.id}</td>
+                    <td>${ticket.email}</td>
+                    <td>${ticket.problem}</td>
+                    <td>${ticket.description}</td>
+                    <td>${ticket.status}</td>
+                    <td>
+                        <button class="btn-repondre" onclick="respondToTicket('${ticket.email}')">Répondre</button>
+                        <button class="btn-fermer" onclick="closeTicket('${ticket.id}')">Fermer</button>
+                    </td>
+                `;
+                ticketsBody.appendChild(row);
             });
         }
 
-        // Fonction pour peupler le formulaire de réponse avec l'email du client
-        function populateResponseForm(email) {
-            document.getElementById('response-email').value = email;
+        // Fonction pour répondre à un ticket
+        function respondToTicket(email) {
+            const message = prompt(`Répondez à ${email} :`);
+            if (message) {
+                alert(`Réponse envoyée : ${message}`);
+                // Ajouter une intégration pour envoyer un email si nécessaire
+            }
         }
 
         // Fonction pour fermer un ticket
-        function closeTicket(index) {
-            const tickets = getTickets();
-            tickets[index].status = 'Fermé';
-            saveTickets(tickets);
-            updateTicketsTable();
-            alert('Le ticket a été fermé.');
+        async function closeTicket(ticketId) {
+            const { error } = await supabase
+                .from('tickets')
+                .update({ status: 'Fermé' })
+                .eq('id', ticketId);
+
+            if (error) {
+                console.error('Erreur lors de la fermeture du ticket :', error);
+                alert('Impossible de fermer le ticket.');
+                return;
+            }
+
+            alert('Ticket fermé avec succès !');
+            fetchTickets(); // Rafraîchir la liste des tickets
         }
 
-        // Initialisation : affiche les tickets au chargement de la page
-        window.onload = updateTicketsTable;
+        // Charger les tickets dès que la page est chargée
+        fetchTickets();
     </script>
 </body>
 </html>
