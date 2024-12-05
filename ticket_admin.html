@@ -89,13 +89,8 @@
 
             // Mettre à jour la réponse dans Firebase
             const ticketRef = ref(database, `tickets/${ticketId}`);
-            update(ticketRef, {
-                response: message,
-                status: 'Répondu'
-            })
-                .then(() => {
-                    alert('Réponse enregistrée dans Firebase.');
-                })
+            update(ticketRef, { response: message, status: 'Répondu' })
+                .then(() => alert('Réponse enregistrée dans Firebase.'))
                 .catch(error => {
                     console.error('Erreur lors de l\'envoi de la réponse :', error);
                     alert('Une erreur est survenue. Veuillez réessayer.');
