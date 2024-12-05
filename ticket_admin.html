@@ -10,6 +10,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
+        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDsQbhHjivqU4RaNpB0zwNpDj_ALq4u4Ww",
             authDomain: "axel-corp.firebaseapp.com",
@@ -20,9 +21,11 @@
             appId: "1:77227996486:web:2c733aa4feed4695062147"
         };
 
+        // Initialiser Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
+        // Fonction pour afficher les tickets
         const displayTickets = () => {
             const ticketsRef = ref(database, 'tickets');
             onValue(ticketsRef, (snapshot) => {
@@ -48,6 +51,7 @@
                         ticketsBody.appendChild(row);
                     });
 
+                    // Ajouter l'événement pour les boutons "Répondre"
                     document.querySelectorAll('.btn-repondre').forEach(button => {
                         button.addEventListener('click', (e) => {
                             const ticketId = e.target.getAttribute('data-ticket-id');
@@ -56,6 +60,7 @@
                         });
                     });
 
+                    // Ajouter l'événement pour les boutons "Fermer"
                     document.querySelectorAll('.btn-fermer').forEach(button => {
                         button.addEventListener('click', (e) => {
                             const ticketId = e.target.getAttribute('data-ticket-id');
@@ -66,49 +71,30 @@
             });
         };
 
+        // Fonction pour peupler le formulaire de réponse
         const populateResponseForm = (ticketId, email) => {
             document.getElementById('response-email').value = email;
             document.getElementById('response-form').onsubmit = (event) => {
-                event.preventDefault();
                 sendResponse(ticketId);
             };
         };
 
+        // Fonction pour envoyer une réponse avec FormSubmit
         const sendResponse = (ticketId) => {
-            const email = document.getElementById('response-email').value;
             const message = document.getElementById('response-message').value;
-
             if (!message) {
                 alert('Veuillez écrire une réponse avant d\'envoyer.');
                 return;
             }
 
+            // Mettre à jour la réponse dans Firebase
             const ticketRef = ref(database, `tickets/${ticketId}`);
-            update(ticketRef, { response: message, status: 'Répondu' })
+            update(ticketRef, {
+                response: message,
+                status: 'Répondu'
+            })
                 .then(() => {
-                    alert('Réponse enregistrée dans la base de données.');
-
-                    // Envoyer l'email via FormSubmit
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = 'https://formsubmit.co/axelcorp@fastmail.com';
-
-                    const emailField = document.createElement('input');
-                    emailField.type = 'hidden';
-                    emailField.name = 'email';
-                    emailField.value = email;
-
-                    const messageField = document.createElement('input');
-                    messageField.type = 'hidden';
-                    messageField.name = 'message';
-                    messageField.value = message;
-
-                    form.appendChild(emailField);
-                    form.appendChild(messageField);
-                    document.body.appendChild(form);
-
-                    form.submit();
-                    document.body.removeChild(form); // Nettoyer après l'envoi
+                    alert('Réponse enregistrée dans Firebase.');
                 })
                 .catch(error => {
                     console.error('Erreur lors de l\'envoi de la réponse :', error);
@@ -116,6 +102,7 @@
                 });
         };
 
+        // Fonction pour fermer un ticket
         const closeTicket = (ticketId) => {
             const ticketRef = ref(database, `tickets/${ticketId}`);
             update(ticketRef, { status: 'Fermé' })
@@ -237,7 +224,6 @@
     <h1>Gestion des Tickets - Administrateur</h1>
     <h2>Vue d'ensemble des tickets</h2>
 
-    <!-- Tableau des tickets -->
     <table>
         <thead>
             <tr>
@@ -252,10 +238,9 @@
         <tbody id="tickets-body"></tbody>
     </table>
 
-    <!-- Section pour répondre à un ticket -->
     <div id="response-section">
         <h3>Répondre au Ticket</h3>
-        <form id="response-form">
+        <form id="response-form" action="https://formsubmit.co/axelcorp@fastmail.com" method="POST">
             <input type="email" id="response-email" name="email" placeholder="Email du client" readonly required>
             <textarea id="response-message" name="message" rows="5" placeholder="Écrivez votre réponse ici..." required></textarea>
             <button type="submit">Envoyer la réponse</button>
