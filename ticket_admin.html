@@ -74,6 +74,41 @@
         // Fonction pour peupler le formulaire de réponse
         const populateResponseForm = (ticketId, email) => {
             document.getElementById('response-email').value = email;
+            document.getElementById('send-response').onclick = () => sendResponse(ticketId);
+        };
+
+        // Fonction pour envoyer une réponse via SMTP.js
+        const sendResponse = (ticketId) => {
+            const email = document.getElementById('response-email').value;
+            const message = document.getElementById('response-message').value;
+
+            if (!message) {
+                alert('Veuillez écrire une réponse avant d\'envoyer.');
+                return;
+            }
+
+            // Envoi via SMTP.js
+            Email.send({
+                Host: "smtp.fastmail.com", // Remplacez par le serveur SMTP de votre fournisseur
+                Username: "axelcorp@fastmail.com",
+                Password: "6j2r47757r7f4z3s", // Utilisez un mot de passe d'application sécurisé
+                To: email,
+                From: "axelcorp@fastmail.com",
+                Subject: "Réponse à votre ticket",
+                Body: message
+            }).then(response => {
+                if (response === "OK") {
+                    alert('Réponse envoyée avec succès !');
+                    const ticketRef = ref(database, `tickets/${ticketId}`);
+                    update(ticketRef, { status: 'Répondu' });
+                } else {
+                    alert('Erreur lors de l\'envoi de l\'email.');
+                }
+            }).catch(error => {
+                console.error('Erreur SMTP.js :', error);
+            });
+
+            document.getElementById('response-message').value = ''; // Réinitialise le champ
         };
 
         // Fonction pour fermer un ticket
@@ -89,6 +124,8 @@
 
         window.addEventListener('load', displayTickets);
     </script>
+
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
 
     <style>
         body {
@@ -214,16 +251,10 @@
 
     <div id="response-section">
         <h3>Répondre au Ticket</h3>
-        <form id="response-form" action="https://formsubmit.co/axelcorp@fastmail.com" method="POST">
-            <input type="email" id="response-email" name="email" placeholder="Email du client" readonly required>
-            <textarea id="response-message" name="message" rows="5" placeholder="Écrivez votre réponse ici..." required></textarea>
-            
-            <!-- Champs cachés pour configurer FormSubmit -->
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_subject" value="Réponse à votre ticket AxelCorp">
-            <input type="hidden" name="_next" value="https://axelcorp.netlify.app/merci.html">
-        
-            <button type="submit">Envoyer la réponse</button>
+        <form id="response-form">
+            <input type="email" id="response-email" placeholder="Email du client" readonly required>
+            <textarea id="response-message" rows="5" placeholder="Écrivez votre réponse ici..." required></textarea>
+            <button type="button" id="send-response">Envoyer la réponse</button>
         </form>
     </div>
 </body>
