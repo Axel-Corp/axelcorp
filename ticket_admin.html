@@ -217,6 +217,12 @@
         <form id="response-form" action="https://formsubmit.co/axelcorp@fastmail.com" method="POST">
             <input type="email" id="response-email" name="email" placeholder="Email du client" readonly required>
             <textarea id="response-message" name="message" rows="5" placeholder="Écrivez votre réponse ici..." required></textarea>
+            
+            <!-- Champs cachés pour configurer FormSubmit -->
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_subject" value="Réponse à votre ticket AxelCorp">
+            <input type="hidden" name="_next" value="https://votre-site.com/merci.html">
+        
             <button type="submit">Envoyer la réponse</button>
         </form>
     </div>
