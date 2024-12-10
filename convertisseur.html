@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convertisseur V-Bucks</title>
+    <title>Convertisseur Robux et V-Bucks</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #e8e8e8;
+            background-color: #f4f4f9;
             padding: 20px;
             display: flex;
             justify-content: center;
@@ -51,12 +51,18 @@
 <body>
 
     <div class="container">
-        <h2>Convertisseur V-Bucks</h2>
-        <label for="vbucks">Montant en V-Bucks:</label>
-        <input type="number" id="vbucks" placeholder="Entrez le nombre de V-Bucks" oninput="convertCurrency()">
+        <h2>Convertisseur Robux et V-Bucks</h2>
+        <label for="amount">Montant :</label>
+        <input type="number" id="amount" placeholder="Entrez le montant" oninput="convertCurrency()">
 
-        <label for="currency">Choisir la devise:</label>
+        <label for="currency">Choisir la monnaie virtuelle :</label>
         <select id="currency" onchange="convertCurrency()">
+            <option value="vbucks">V-Bucks</option>
+            <option value="robux">Robux</option>
+        </select>
+
+        <label for="targetCurrency">Choisir la devise :</label>
+        <select id="targetCurrency" onchange="convertCurrency()">
             <option value="euro">Euro (€)</option>
             <option value="usd">Dollar ($)</option>
             <option value="gbp">Livre sterling (£)</option>
@@ -69,25 +75,35 @@
 
     <script>
         function convertCurrency() {
-            var vbucks = document.getElementById("vbucks").value;
+            var amount = document.getElementById("amount").value;
             var currency = document.getElementById("currency").value;
+            var targetCurrency = document.getElementById("targetCurrency").value;
             
-            // Taux de conversion fictifs (ajustez en fonction des taux réels)
-            var rates = {
-                euro: 0.00899,  // 1 V-Buck = 0.01 €
-                usd: 0.0095,  // 1 V-Buck = 0.011 $
-                gbp: 0.00744,  // 1 V-Buck = 0.009 £
+            // Taux de conversion fictifs pour les V-Bucks
+            var vbucksRates = {
+                euro: 0.01,  // 1 V-Buck = 0.01 €
+                usd: 0.011,  // 1 V-Buck = 0.011 $
+                gbp: 0.009   // 1 V-Buck = 0.009 £
             };
-            
-            if (vbucks && rates[currency]) {
-                var result = vbucks * rates[currency];
+
+            // Taux de conversion réels pour les Robux (400 Robux = 5,99 €)
+            var robuxRates = {
+                euro: 5.99 / 400,  // 1 Robux = ~0.014975 €
+                usd: (5.99 / 400) * 1.1,  // Hypothèse : 1 € = 1.1 $
+                gbp: (5.99 / 400) * 0.85 // Hypothèse : 1 € = 0.85 £
+            };
+
+            var rates = currency === "vbucks" ? vbucksRates : robuxRates;
+
+            if (amount && rates[targetCurrency]) {
+                var result = amount * rates[targetCurrency];
                 var currencySymbol = {
                     euro: "€",
                     usd: "$",
-                    gbp: "£",
+                    gbp: "£"
                 };
 
-                document.getElementById("result").innerHTML = `${vbucks} V-Bucks = ${result.toFixed(4)} ${currencySymbol[currency]}`;
+                document.getElementById("result").innerHTML = `${amount} ${currency === "vbucks" ? "V-Bucks" : "Robux"} = ${result.toFixed(4)} ${currencySymbol[targetCurrency]}`;
             } else {
                 document.getElementById("result").innerHTML = "";
             }
