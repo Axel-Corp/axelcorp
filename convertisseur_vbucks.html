@@ -60,7 +60,6 @@
             <option value="euro">Euro (€)</option>
             <option value="usd">Dollar ($)</option>
             <option value="gbp">Livre sterling (£)</option>
-            <option value="btc">Bitcoin (BTC)</option>
         </select>
 
         <button onclick="convertCurrency()">Convertir</button>
@@ -78,7 +77,6 @@
                 euro: 0.00899,  // 1 V-Buck = 0.01 €
                 usd: 0.0095,  // 1 V-Buck = 0.011 $
                 gbp: 0.00744,  // 1 V-Buck = 0.009 £
-                btc: 0.000000097, // 1 V-Buck = 0.0000002 BTC
             };
             
             if (vbucks && rates[currency]) {
@@ -87,7 +85,6 @@
                     euro: "€",
                     usd: "$",
                     gbp: "£",
-                    btc: "BTC"
                 };
 
                 document.getElementById("result").innerHTML = `${vbucks} V-Bucks = ${result.toFixed(4)} ${currencySymbol[currency]}`;
