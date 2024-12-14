@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Citations</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        blockquote {
+            font-size: 24px;
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .author {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <blockquote id="quote">"La vie est ce qui se passe pendant que vous êtes occupé à faire d'autres projets."</blockquote>
+    <p class="author" id="author">John Lennon</p>
+    <button onclick="newQuote()">Nouvelle citation</button>
+</div>
+
+<script>
+    // Tableau des citations avec l'auteur
+    const quotes = [
+        { text: "La vie est ce qui se passe pendant que vous êtes occupé à faire d'autres projets.", author: "John Lennon" },
+        { text: "L'éducation est l'arme la plus puissante pour changer le monde.", author: "Nelson Mandela" },
+        { text: "Soyez le changement que vous voulez voir dans le monde.", author: "Mahatma Gandhi" },
+        { text: "Le succès n'est pas final, l'échec n'est pas fatal : c'est le courage de continuer qui compte.", author: "Winston Churchill" },
+        { text: "La seule façon de faire du bon travail est d'aimer ce que vous faites.", author: "Steve Jobs" },
+        { text: "Le seul vrai échec est celui dont on ne se relève pas.", author: "John Madden" },
+        { text: "Le travail éloigne de nous trois grands maux : l'ennui, le vice et le besoin.", author: "Voltaire" },
+        { text: "Un seul être vous manque et tout est dépeuplé.", author: "Lamartine" }
+    ];
+
+    // Fonction pour générer une nouvelle citation
+    function newQuote() {
+        // Sélectionner une citation aléatoire
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
+
+        // Mettre à jour la citation et l'auteur sur la page
+        document.getElementById('quote').textContent = `"${randomQuote.text}"`;
+        document.getElementById('author').textContent = randomQuote.author;
+    }
+</script>
+
+</body>
+</html>
