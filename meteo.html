@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site de Météo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .weather-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .weather-container:hover {
+            transform: scale(1.05);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #ff7e5f;
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff7e5f;
+            box-shadow: 0 0 10px rgba(255, 126, 95, 0.5);
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #ff7e5f;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #feb47b;
+        }
+
+        #weatherResult {
+            margin-top: 20px;
+        }
+
+        #cityName {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color:rgba(0, 0, 0, 0.1)
+        }
+
+        #temperature {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        #description {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .emoji {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-container">
+        <h1>Prévisions Météo</h1>
+        <input type="text" id="city" placeholder="Entrez une ville" />
+        <button id="getWeather">Obtenir la météo</button>
+        <div id="weatherResult">
+            <div id="emoji" class="emoji"></div>
+            <h2 id="cityName"></h2>
+            <p id="temperature"></p>
+            <p id="description"></p>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = '4ddd05339fb0b98979a1a48ed48d572b';
+        const getWeatherButton = document.getElementById('getWeather');
+        const cityInput = document.getElementById('city');
+        const cityName = document.getElementById('cityName');
+        const temperature = document.getElementById('temperature');
+        const description = document.getElementById('description');
+        const emoji = document.getElementById('emoji');
+
+        getWeatherButton.addEventListener('click', async () => {
+            const city = cityInput.value.trim();
+            if (!city) {
+                alert('Veuillez entrer une ville.');
+                return;
+            }
+
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=fr&appid=${apiKey}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                // Vérifie si la ville est trouvée ou si une erreur est renvoyée par l'API
+                if (data.cod !== 200) {
+                    alert('Ville non trouvée ou erreur dans la requête.');
+                    return;
+                }
+                
+                // Mise à jour des éléments avec les données de la météo
+                cityName.innerText = `${data.name}, ${data.sys.country}`;
+                temperature.innerText = `Température: ${data.main.temp}°C`;
+                description.innerText = `Condition: ${data.weather[0].description}`;
+                
+                // Ajout des emojis selon les conditions météo
+                switch (data.weather[0].main) {
+                    case 'Clear':
+                        emoji.innerHTML = '☀️'; // Soleil
+                        break;
+                    case 'Clouds':
+                        emoji.innerHTML = '☁️'; // Nuages
+                        break;
+                    case 'Rain':
+                        emoji.innerHTML = '🌧️'; // Pluie
+                        break;
+                    case 'Snow':
+                        emoji.innerHTML = '❄️'; // Neige
+                        break;
+                    case 'Thunderstorm':
+                        emoji.innerHTML = '🌩️'; // Orage
+                        break;
+                    case 'Drizzle':
+                        emoji.innerHTML = '🌦️'; // Bruine
+                        break;
+                    default:
+                        emoji.innerHTML = '🌍'; // Terre pour toute autre condition
+                }
+            } catch (error) {
+                alert('Erreur lors de la récupération des données météo : ' + error.message);
+            }
+        });
+    </script>
+</body>
+</html>
