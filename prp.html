@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu Pierre-Papier-Ciseaux</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .buttons button {
+            font-size: 50px;
+            padding: 30px;
+            width: 100px;
+            height: 100px;
+            border: none;
+            background-color: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .buttons button:hover {
+            transform: scale(1.1);
+            background-color: #ffcc00;
+        }
+
+        .buttons button:active {
+            transform: scale(0.95);
+        }
+
+        .result {
+            font-size: 1.5em;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .score {
+            font-size: 1.2em;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 1em;
+        }
+
+        footer a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jeu Pierre-Papier-Ciseaux</h1>
+
+    <div class="buttons">
+        <button onclick="playGame('🪨')">🪨</button>
+        <button onclick="playGame('🍁')">🍁</button>
+        <button onclick="playGame('✂️')">✂️</button>
+    </div>
+
+    <div class="result" id="result">Choisissez votre option !</div>
+    <div class="score" id="score">Score: 0 - 0</div>
+
+    <footer>
+        <p>Découvrez pourquoi l'ordinateur n'est pas toujours gagnant <a href="prove-computer-not-always-winning.html" target="_blank">ici</a>.</p>
+    </footer>
+
+    <script>
+        let playerScore = 0;
+        let computerScore = 0;
+
+        function playGame(playerChoice) {
+            const choices = ['🪨', '🍁', '✂️'];
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+            let result = '';
+
+            // Calcul du résultat
+            if (playerChoice === computerChoice) {
+                result = 'Égalité !';
+            } else if (
+                (playerChoice === '🪨' && computerChoice === '✂️') ||
+                (playerChoice === '🍁' && computerChoice === '🪨') ||
+                (playerChoice === '✂️' && computerChoice === '🍁')
+            ) {
+                result = 'Vous gagnez !';
+                playerScore++;
+            } else {
+                result = 'Vous perdez !';
+                computerScore++;
+            }
+
+            // Mise à jour de l'affichage
+            document.getElementById('result').textContent = `Vous avez choisi ${playerChoice}. L'ordinateur a choisi ${computerChoice}. ${result}`;
+            document.getElementById('score').textContent = `Score: ${playerScore} - ${computerScore}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preuve : L'ordinateur n'est pas toujours gagnant</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff7e5f;
+        }
+
+        p {
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+
+        code {
+            background-color: #eee;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+
+        pre {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        a {
+            color: #ff7e5f;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Preuve : L'ordinateur n'est pas toujours gagnant</h1>
+
+    <p>
+        Le jeu Pierre-Papier-Ciseaux est basé sur un algorithme aléatoire qui ne favorise ni le joueur, ni l'ordinateur.
+        Voici un extrait de code simple qui montre que le choix de l'ordinateur est totalement aléatoire :
+    </p>
+
+    <pre>
+        <code>
+        // Choix de l'ordinateur, tiré aléatoirement entre 🪨, 🍁 et ✂️
+        const choices = ['🪨', '🍁', '✂️'];
+        const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+        </code>
+    </pre>
+
+    <p>
+        Comme vous pouvez le voir, chaque fois que l'ordinateur joue, il sélectionne aléatoirement une des trois options disponibles.
+        Il n'y a pas de biais systématique pour favoriser l'ordinateur. À chaque tour, il est tout aussi probable pour l'ordinateur de perdre, de gagner ou de faire égalité.
+    </p>
+
+    <p>
+        Voici un autre exemple de code qui montre la logique de décision du jeu pour déterminer le gagnant :
+    </p>
+
+    <pre>
+        <code>
+        if (playerChoice === computerChoice) {
+            result = 'Égalité !';
+        } else if (
+            (playerChoice === '🪨' && computerChoice === '✂️') ||
+            (playerChoice === '🍁' && computerChoice === '🪨') ||
+            (playerChoice === '✂️' && computerChoice === '🍁')
+        ) {
+            result = 'Vous gagnez !';
+        } else {
+            result = 'Vous perdez !';
+        }
+        </code>
+    </pre>
+
+    <p>
+        Ce code montre que le résultat du jeu est basé sur les règles classiques de Pierre-Papier-Ciseaux, et la victoire n'est pas prédéterminée par un biais en faveur de l'ordinateur.
+    </p>
+
+    <p><a href="prp.html">Retour au jeu</a></p>
+</body>
+</html>
