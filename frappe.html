@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Frappe</title>
+    <style>
+        /* Styles généraux */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #FFDEE9, #B5FFFC);
+            color: #333;
+        }
+
+        .container {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #4a4a4a;
+        }
+
+        #quote {
+            font-size: 1.2em;
+            margin: 20px 0;
+            font-weight: 500;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        #inputBox {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        #inputBox.correct {
+            border-color: #4caf50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        #inputBox.wrong {
+            border-color: #e74c3c;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #stats {
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1em;
+            margin-top: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test de Frappe</h1>
+        <p id="quote">Cliquez sur "Démarrer" pour lancer le test.</p>
+        <input type="text" id="inputBox" placeholder="Tapez ici..." disabled />
+        <div id="result"></div>
+        <div id="stats"></div>
+        <button id="startButton">Démarrer</button>
+    </div>
+
+    <script>
+        const quotes = [
+            "Le soleil brille sur la montagne silencieuse.",
+            "Chaque jour est une nouvelle opportunité d'apprendre.",
+            "Les chats aiment dormir au soleil.",
+            "La vie est belle quand on prend le temps de la savourer.",
+            "JavaScript est amusant à apprendre et à utiliser.",
+            "Le vent souffle doucement à travers les arbres.",
+            "Un petit pas aujourd'hui mène à de grandes réussites demain.",
+            "La lecture ouvre les portes de l'imagination.",
+            "Il n'y a pas de raccourci pour atteindre l'excellence.",
+            "Les fleurs dans le jardin dansent sous la pluie.",
+            "La technologie évolue rapidement, il faut rester curieux.",
+            "Prendre des pauses est aussi important que travailler dur.",
+            "La musique adoucit les mœurs et apaise l'esprit.",
+            "Il faut toujours viser la lune, même en cas d'échec.",
+            "Les montagnes ne sont pas impossibles à gravir.",
+            "L'apprentissage est un voyage sans fin.",
+            "Un esprit sain dans un corps sain est la clé du bonheur.",
+            "Les meilleurs moments de la vie sont souvent simples.",
+            "Écrire des lignes de code, c'est comme peindre un tableau.",
+            "Le ciel étoilé raconte des histoires depuis la nuit des temps.",
+            "Un sourire peut illuminer la journée de quelqu'un.",
+            "Chaque difficulté surmontée est une victoire personnelle.",
+            "Les plus belles aventures commencent par un simple départ.",
+            "Savoir écouter est une qualité aussi précieuse que savoir parler.",
+            "La patience est la clé du succès.",
+            "Les rivières creusent leur chemin même à travers la pierre.",
+            "Il faut parfois se perdre pour mieux se retrouver.",
+            "Créer, c'est transformer une idée en réalité.",
+            "Les rêves sont faits pour être réalisés.",
+            "Ne sous-estime jamais la force de la persévérance.",
+            "Le matin est le moment idéal pour un nouveau départ.",
+            "Les voyages forment la jeunesse et élargissent l'esprit.",
+            "Programmer, c'est résoudre des problèmes avec de la logique.",
+            "La beauté de la nature est une source infinie d'inspiration.",
+            "Les amis sont les étoiles qui brillent dans la nuit.",
+            "La confiance en soi est la première étape vers le succès.",
+            "Chaque ligne de code compte pour construire un programme parfait.",
+            "La pluie tombe mais laisse place au soleil.",
+            "La meilleure manière d'apprendre est d'essayer encore et encore.",
+            "Les bugs sont des opportunités pour apprendre quelque chose de nouveau.",
+            "Le code parfait n'existe pas, il peut toujours être amélioré.",
+            "Développer, c'est transformer des idées en solutions concrètes.",
+            "Un bon développeur est toujours prêt à apprendre un nouveau langage.",
+            "L'optimisation du code est aussi importante que sa création.",
+            "Écrire du code clair, c'est écrire pour les humains, pas pour la machine.",
+            "Les algorithmes sont le cœur de la résolution de problèmes.",
+            "Il n'y a pas de magie dans le développement, juste de la logique et de la pratique.",
+            "La documentation est le meilleur ami d'un développeur.",
+            "Chaque erreur dans le code est une étape vers la réussite."
+        ];
+
+        const quoteElement = document.getElementById('quote');
+        const inputBox = document.getElementById('inputBox');
+        const startButton = document.getElementById('startButton');
+        const resultElement = document.getElementById('result');
+        const statsElement = document.getElementById('stats');
+
+        let currentQuote = "";
+        let startTime = 0;
+        let totalCharsTyped = 0;
+        let correctCharsTyped = 0;
+
+        startButton.addEventListener('click', startTest);
+        inputBox.addEventListener('input', checkInput);
+
+        function startTest() {
+            currentQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            quoteElement.textContent = currentQuote;
+            inputBox.value = "";
+            inputBox.disabled = false;
+            inputBox.focus();
+            resultElement.textContent = "";
+            statsElement.textContent = "";
+            totalCharsTyped = 0;
+            correctCharsTyped = 0;
+            startTime = Date.now();
+            inputBox.classList.remove('correct', 'wrong');
+        }
+
+        function checkInput() {
+            const userInput = inputBox.value;
+            totalCharsTyped = userInput.length;
+
+            if (currentQuote.startsWith(userInput)) {
+                inputBox.classList.remove('wrong');
+                inputBox.classList.add('correct');
+                correctCharsTyped = userInput.length;
+            } else {
+                inputBox.classList.remove('correct');
+                inputBox.classList.add('wrong');
+                inputBox.value = userInput.slice(0, -1);
+            }
+
+            if (userInput === currentQuote) {
+                const endTime = Date.now();
+                const timeElapsed = (endTime - startTime) / 1000; // en secondes
+                const wpm = ((totalCharsTyped / 5) / (timeElapsed / 60)).toFixed(2); // Calcul des mots par minute
+                const accuracy = ((correctCharsTyped / totalCharsTyped) * 100).toFixed(2); // Calcul de la précision
+
+                resultElement.textContent = "🎉 Bravo, tu as réussi !";
+                statsElement.textContent = `Temps : ${timeElapsed.toFixed(2)} secondes | WPM : ${wpm} | Précision : ${accuracy}%`;
+                inputBox.disabled = true;
+                inputBox.classList.remove('correct', 'wrong');
+            }
+        }
+    </script>
+</body>
+</html>
