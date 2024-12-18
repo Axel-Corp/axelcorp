@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #e8f5e9;
+            color: #333;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+        .palette {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        .color {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        .color:hover {
+            transform: scale(1.1);
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            background-color: #43a047;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #2e7d32;
+            transform: scale(1.05);
+        }
+        input[type="color"], input[type="number"] {
+            margin: 10px;
+            padding: 8px;
+            border: 2px solid #a5d6a7;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        input[type="color"]:hover, input[type="number"]:hover {
+            border-color: #66bb6a;
+        }
+        label {
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Color Palette Generator</h1>
+        <label for="baseColor">Choose Base Color:</label>
+        <input type="color" id="baseColor" value="#ff0000">
+        <label for="step">Step (brightness difference):</label>
+        <input type="number" id="step" value="20" min="1" max="100">
+        <br><br>
+        <button onclick="generatePalette()">Generate Palette</button>
+        <div class="palette" id="palette"></div>
+    </div>
+
+    <script>
+        function shadeColor(color, percent) {
+            const num = parseInt(color.slice(1), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = ((num >> 8) & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return `#${(0x1000000 + (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 + (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 + (B < 255 ? (B < 1 ? 0 : B) : 255)).toString(16).slice(1)}`;
+        }
+
+        function generatePalette() {
+            const paletteContainer = document.getElementById('palette');
+            const baseColor = document.getElementById('baseColor').value;
+            const step = parseInt(document.getElementById('step').value, 10);
+            paletteContainer.innerHTML = '';
+
+            for (let i = -step * 2; i <= step * 2; i += step) {
+                const color = shadeColor(baseColor, i);
+                const colorDiv = document.createElement('div');
+                colorDiv.className = 'color';
+                colorDiv.style.backgroundColor = color;
+                colorDiv.textContent = color;
+                paletteContainer.appendChild(colorDiv);
+            }
+        }
+
+        // Generate an initial palette on page load
+        window.onload = generatePalette;
+    </script>
+</body>
+</html>
