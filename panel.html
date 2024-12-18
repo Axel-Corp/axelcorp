@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Discord</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #23272a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .panel-container {
+            background-color: #2f3136;
+            padding: 40px;
+            border-radius: 8px;
+            width: 400px;
+            text-align: center;
+            display: none;
+        }
+
+        .discord-logo {
+            width: 80px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .username {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            background-color: #7289da;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background-color: #5a6e9f;
+        }
+
+        #message {
+            color: red;
+            margin-top: 20px;
+        }
+
+        #login-container {
+            text-align: center;
+        }
+
+        #login-container .btn {
+            background-color: #5865f2;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Panel utilisateur qui s'affiche après une connexion réussie -->
+<div class="panel-container" id="panel">
+    <img class="discord-logo" src="image.png" alt="Discord Logo">
+    <h1>Bienvenue, <span id="username"></span></h1>
+    <img id="avatar" class="avatar" src="" alt="Avatar">
+    <p class="username" id="user-username"></p>
+    <button class="btn" id="logout-btn">Se déconnecter</button>
+    <p id="message"></p>
+</div>
+
+<!-- Le bouton de connexion Discord -->
+<div id="login-container">
+    <a href="https://discord.com/oauth2/authorize?client_id=1303050230220193922&redirect_uri=https://axelcorp.netlify.app/&response_type=code&scope=identify">
+        <button class="btn">Se connecter avec Discord</button>
+    </a>
+</div>
+
+<script>
+    // Vérification si le code d'autorisation est présent dans l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (code) {
+        // Echange du code contre un token d'accès
+        const client_id = '1303050230220193922';
+        const client_secret = 'YoSLvl4WyEyI5h329uqDJ6ApMBeeJYye';
+        const redirect_uri = 'https://axelcorp.netlify.app';
+        
+        fetch(`https://discord.com/api/oauth2/token`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                client_id: client_id,
+                client_secret: client_secret,
+                code: code,
+                grant_type: 'authorization_code',
+                redirect_uri: redirect_uri,
+                scope: 'identify'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const accessToken = data.access_token;
+
+            // Utiliser le token pour récupérer les informations de l'utilisateur
+            fetch('https://discord.com/api/v10/users/@me', {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            .then(response => response.json())
+            .then(user => {
+                // Afficher les données utilisateur
+                document.getElementById('username').textContent = user.username;
+                document.getElementById('user-username').textContent = `Nom d'utilisateur : ${user.username}`;
+                document.getElementById('avatar').src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+
+                // Afficher le panel et cacher le bouton de connexion
+                document.getElementById('panel').style.display = 'block';
+                document.getElementById('login-container').style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                document.getElementById('message').textContent = 'Erreur lors de la récupération des données utilisateur.';
+            });
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            document.getElementById('message').textContent = 'Erreur de connexion, veuillez réessayer.';
+        });
+    }
+
+    // Logique pour déconnexion
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        // Pour déconnecter l'utilisateur, réinitialiser l'interface et revenir à la page de connexion
+        window.location.href = '/'; // Rediriger vers la page d'accueil ou la page de connexion
+    });
+</script>
+
+</body>
+</html>
