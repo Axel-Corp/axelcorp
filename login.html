@@ -1,22 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PCKQ5BNR');</script>
-    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - AxelCorp</title>
-    <link rel="icon » href="favicon.ico » type="image/x-icon"/>
+    <title>Se connecter à Discord</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
+            background-color: #23272a;
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -25,62 +17,68 @@
         }
 
         .login-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            background-color: #2f3136;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
-        .login-container h1 {
+        .discord-logo {
+            width: 80px;
             margin-bottom: 20px;
         }
 
-        .login-container input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        h1 {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
 
-        .login-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #333;
-            color: white;
+        .login-btn {
+            padding: 12px 20px;
+            background-color: #7289da;
             border: none;
+            color: white;
+            font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
         }
 
-        .login-container button:hover {
-            background-color: #555;
-        }
-
-        .error {
-            color: red;
-            font-size: 0.9em;
-            margin-top: 10px;
+        .login-btn:hover {
+            background-color: #5a6e9f;
         }
     </style>
 </head>
-
 <body>
-    <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCKQ5BNR"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-    <div class="login-container">
-        <h1>Connexion</h1>
-        <form id="login-form">
-            <input type="text" id="username" placeholder="Identifiant" required>
-            <input type="password" id="password" placeholder="Mot de passe" required>
-            <button type="submit">Se connecter</button>
-        </form>
-        <p class="error" id="error-message"></p>
-    </div>
-    <script src="login.js"></script>
+
+<div class="login-container">
+    <img class="discord-logo" src="image.png" alt="Discord Logo">
+    <h1>Se connecter à Discord</h1>
+    
+    <button class="login-btn" id="login-btn">Se connecter avec Discord</button>
+</div>
+
+<script>
+    // Quand l'utilisateur clique sur le bouton
+    document.getElementById('login-btn').addEventListener('click', function() {
+        // Remplacez "YOUR_CLIENT_ID" par votre client ID Discord
+        const clientId = '1303050230220193922';
+        // Remplacez "YOUR_REDIRECT_URI" par l'URL de redirection que vous avez configurée dans le Discord Developer Portal
+        const redirectUri = encodeURIComponent('https://www.axelcorp.netlify.app/panel'); 
+        const responseType = 'code'; // Le type de réponse est un code d'autorisation
+        const scope = 'identify email'; // Scopes nécessaires pour récupérer l'ID de l'utilisateur et son email
+
+        // Construire l'URL de l'authentification Discord OAuth2
+        const oauthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+
+        // Rediriger l'utilisateur vers Discord pour qu'il se connecte
+        window.location.href = oauthUrl;
+    });
+</script>
+
 </body>
 </html>
