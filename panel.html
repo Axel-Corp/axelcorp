@@ -62,12 +62,14 @@
         const code = urlParams.get('code');
 
         if (!code) {
-            document.getElementById('user-info').innerHTML = '<p class="error">Code d\'autorisation introuvable.</p>';
+            document.getElementById('user-info').innerHTML = '<p class="error">Code d\'autorisation introuvable dans l\'URL. Vérifiez votre redirection.</p>';
         } else {
+            console.log('Code d\'autorisation trouvé :', code);  // Affiche le code dans la console pour déboguer
+
             // Configurations OAuth2
-            const clientId = '1303050230220193922';
-            const clientSecret = 'uASYB9vtt7KMrwKbZdx3V3gdGZnUGp3v';
-            const redirectUri = 'https://axelcorp.netlify.app/panel';
+            const clientId = '1303050230220193922'; // Ton Client ID
+            const clientSecret = 'uASYB9vtt7KMrwKbZdx3V3gdGZnUGp3v'; // Ton Client Secret
+            const redirectUri = 'https://axelcorp.netlify.app/panel'; // Ton URL de redirection
 
             // Échange le code d'autorisation pour obtenir un jeton
             fetch('https://discord.com/api/oauth2/token', {
@@ -103,14 +105,17 @@
                         `;
                         document.getElementById('user-info').innerHTML = userInfo;
                     })
-                    .catch(() => {
+                    .catch(error => {
+                        console.error('Erreur lors de la récupération des informations utilisateur:', error);
                         document.getElementById('user-info').innerHTML = '<p class="error">Impossible de récupérer les informations utilisateur.</p>';
                     });
                 } else {
-                    document.getElementById('user-info').innerHTML = '<p class="error">Échec de l\'obtention du jeton.</p>';
+                    console.error('Échec de l\'obtention du jeton:', tokenData);
+                    document.getElementById('user-info').innerHTML = '<p class="error">Échec de l\'obtention du jeton d\'accès.</p>';
                 }
             })
-            .catch(() => {
+            .catch(error => {
+                console.error('Erreur lors de l\'authentification:', error);
                 document.getElementById('user-info').innerHTML = '<p class="error">Une erreur est survenue lors de l\'authentification.</p>';
             });
         }
