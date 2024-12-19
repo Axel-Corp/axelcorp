@@ -57,6 +57,9 @@
     </div>
 
     <script>
+        // Liste des IDs autorisés
+        const allowedUserIds = ['989201861322096661', '1137901772766183524', '940642126805499935'];
+
         // Extraire le fragment de l'URL après le '#'
         const urlHash = window.location.hash.substring(1); // Retirer le '#' au début de l'URL
         console.log("URL Hash:", urlHash); // Log du fragment pour débogage
@@ -85,13 +88,19 @@
                 return response.json();
             })
             .then(userData => {
-                // Afficher les informations de l'utilisateur
-                const userInfo = `
-                    <img id="avatar" src="https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png" alt="Avatar">
-                    <p class="info">Bienvenue, <strong>${userData.username}</strong>!</p>
-                    <p class="info">ID : ${userData.id}</p>
-                `;
-                document.getElementById('user-info').innerHTML = userInfo;
+                // Vérifier si l'ID de l'utilisateur est dans la liste autorisée
+                if (allowedUserIds.includes(userData.id)) {
+                    // Afficher les informations de l'utilisateur si autorisé
+                    const userInfo = `
+                        <img id="avatar" src="https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png" alt="Avatar">
+                        <p class="info">Bienvenue, <strong>${userData.username}</strong>!</p>
+                        <p class="info">ID : ${userData.id}</p>
+                    `;
+                    document.getElementById('user-info').innerHTML = userInfo;
+                } else {
+                    // Si l'utilisateur n'est pas autorisé
+                    document.getElementById('user-info').innerHTML = '<p class="error">Vous n\'avez pas accès à ce panel.</p>';
+                }
             })
             .catch(error => {
                 console.error("Erreur:", error); // Log de l'erreur pour débogage
