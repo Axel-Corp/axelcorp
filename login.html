@@ -46,71 +46,27 @@
         .login-btn:hover {
             background-color: #5a6e9f;
         }
-
-        #message {
-            color: red;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
 
 <div class="login-container">
-    <img class="discord-logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Discord_logo_2023.png" alt="Discord Logo">
+    <img class="discord-logo" src="image.png" alt="Discord Logo">
     <h1>Se connecter à Discord</h1>
     <button class="login-btn" id="login-btn">Se connecter avec Discord</button>
-    <p id="message"></p>
 </div>
 
 <script>
-    // Liste des identifiants autorisés
-    const authorizedUsers = ['940642126805499935', '1137901772766183524', "989201861322096661"]; // Remplacez par des IDs valides
-
-    // Quand l'utilisateur clique sur le bouton
     document.getElementById('login-btn').addEventListener('click', function() {
-        // Remplacez "YOUR_CLIENT_ID" par votre client ID Discord
         const clientId = '1303050230220193922';
-        // Remplacez "YOUR_REDIRECT_URI" par l'URL de redirection que vous avez configurée dans le Discord Developer Portal
-        const redirectUri = encodeURIComponent('https://www.axelcorp.netlify.app/panel');
-        const responseType = 'code'; // Le type de réponse est un code d'autorisation
-        const scope = 'identify'; // Scopes nécessaires pour récupérer l'ID de l'utilisateur
+        const redirectUri = encodeURIComponent('https://ton-site.netlify.app');
+        const responseType = 'token';
+        const scope = 'identify';
 
-        // Construire l'URL de l'authentification Discord OAuth2
         const oauthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
 
-        // Rediriger l'utilisateur vers Discord pour qu'il se connecte
         window.location.href = oauthUrl;
     });
-
-    // Une fois redirigé, récupérer le code d'autorisation et valider l'utilisateur
-    function validateUser(code) {
-        // Cette étape nécessite un backend pour échanger le code contre un token d'accès
-        // Ce code est un exemple pour la logique côté frontend. En pratique, vous aurez besoin d'un backend pour faire ce travail.
-
-        // Simuler un appel API à Discord pour obtenir les informations de l'utilisateur
-        fetch(`https://discord.com/api/v10/oauth2/token`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `client_id=1303050230220193922&client_secret=YoSLvl4WyEyI5h329uqDJ6ApMBeeJYye&code=${code}&grant_type=authorization_code&redirect_uri=YOUR_REDIRECT_URI`
-        })
-        .then(response => response.json())
-        .then(data => {
-            const userId = data.user.id;
-
-            // Vérifier si l'ID de l'utilisateur est autorisé
-            if (authorizedUsers.includes(userId)) {
-                document.getElementById('message').textContent = 'Bienvenue, vous êtes connecté !';
-                document.getElementById('message').style.color = 'green';
-            } else {
-                document.getElementById('message').textContent = 'Vous n\'êtes pas autorisé à vous connecter.';
-            }
-        })
-        .catch(error => {
-            document.getElementById('message').textContent = 'Une erreur est survenue. Essayez à nouveau.';
-        });
-    }
 </script>
 
 </body>

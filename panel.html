@@ -81,7 +81,7 @@
 
 <!-- Panel utilisateur qui s'affiche après une connexion réussie -->
 <div class="panel-container" id="panel">
-    <img class="discord-logo" src="image.png" alt="Discord Logo">
+    <img class="discord-logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Discord_logo_2023.png" alt="Discord Logo">
     <h1>Bienvenue, <span id="username"></span></h1>
     <img id="avatar" class="avatar" src="" alt="Avatar">
     <p class="username" id="user-username"></p>
@@ -91,7 +91,7 @@
 
 <!-- Le bouton de connexion Discord -->
 <div id="login-container">
-    <a href="https://discord.com/oauth2/authorize?client_id=1303050230220193922&redirect_uri=https://axelcorp.netlify.app/&response_type=code&scope=identify">
+    <a href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&response_type=code&scope=identify">
         <button class="btn">Se connecter avec Discord</button>
     </a>
 </div>
@@ -104,9 +104,8 @@
     if (code) {
         // Echange du code contre un token d'accès
         const client_id = '1303050230220193922';
-        const client_secret = 'YoSLvl4WyEyI5h329uqDJ6ApMBeeJYye';
-        const redirect_uri = 'https://axelcorp.netlify.app';
-        
+        const client_secret = 'w-hiW9Ba2DzFQ3rP5Miqu0YYQhnsp826';
+        const redirect_uri = 'https://axelcorp.netlify.app/panel';
         fetch(`https://discord.com/api/oauth2/token`, {
             method: 'POST',
             headers: {
