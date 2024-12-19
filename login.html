@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion Discord</title>
+    <title>Panel Discord</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,7 +16,7 @@
             margin: 0;
         }
 
-        .login-container {
+        .panel-container {
             background-color: #2f3136;
             padding: 40px;
             border-radius: 8px;
@@ -33,41 +33,59 @@
             margin-bottom: 20px;
         }
 
-        .login-btn {
-            padding: 12px 20px;
-            background-color: #7289da;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
+        .info {
+            margin: 20px 0;
         }
 
-        .login-btn:hover {
-            background-color: #5a6e9f;
+        #avatar {
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
         }
     </style>
 </head>
 <body>
+    <div class="panel-container">
+        <img class="discord-logo" src="image.png" alt="Discord Logo">
+        <h1>Bienvenue sur le Panel</h1>
+        <div id="user-info">
+            <p class="info">Chargement des informations...</p>
+        </div>
+    </div>
 
-<div class="login-container">
-    <img class="discord-logo" src="image.png" alt="Discord Logo">
-    <h1>Se connecter à Discord</h1>
-    <button class="login-btn" id="login-btn">Se connecter avec Discord</button>
-</div>
+    <script>
+        // Extraire le token depuis le fragment de l'URL
+        const urlHash = window.location.hash.substring(1); // Retirer le '#' au début de l'URL
+        const params = new URLSearchParams(urlHash);
+        const accessToken = params.get('access_token');  // Récupérer le token
 
-<script>
-    document.getElementById('login-btn').addEventListener('click', function() {
-        const clientId = '1303050230220193922';
-        const redirectUri = encodeURIComponent('https://axelcorp.netlify.app/panel');
-        const responseType = 'token';
-        const scope = 'identify';
-
-        const oauthUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
-
-        window.location.href = oauthUrl;
-    });
-</script>
-
+        if (!accessToken) {
+            document.getElementById('user-info').innerHTML = '<p class="error">Aucun jeton d\'accès trouvé dans l\'URL.</p>';
+        } else {
+            // Utiliser le token pour obtenir les informations de l'utilisateur
+            fetch('https://discord.com/api/v10/users/@me', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            .then(response => response.json())
+            .then(userData => {
+                // Afficher les informations de l'utilisateur
+                const userInfo = `
+                    <img id="avatar" src="https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png" alt="Avatar">
+                    <p class="info">Bienvenue, <strong>${userData.username}</strong>!</p>
+                    <p class="info">ID : ${userData.id}</p>
+                `;
+                document.getElementById('user-info').innerHTML = userInfo;
+            })
+            .catch(() => {
+                document.getElementById('user-info').innerHTML = '<p class="error">Impossible de récupérer les informations utilisateur.</p>';
+            });
+        }
+    </script>
 </body>
 </html>
