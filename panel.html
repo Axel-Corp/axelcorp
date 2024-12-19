@@ -57,66 +57,45 @@
     </div>
 
     <script>
-        // Utilise le code d'autorisation de l'URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
+        // Extraire le fragment de l'URL après le '#'
+        const urlHash = window.location.hash.substring(1); // Retirer le '#' au début de l'URL
+        console.log("URL Hash:", urlHash); // Log du fragment pour débogage
 
-        if (!code) {
-            document.getElementById('user-info').innerHTML = '<p class="error">Code d\'autorisation introuvable dans l\'URL. Vérifiez votre redirection.</p>';
+        const params = new URLSearchParams(urlHash);
+        const accessToken = params.get('access_token');  // Récupérer le token
+
+        if (!accessToken) {
+            console.error("Aucun jeton d'accès trouvé dans l'URL.");
+            document.getElementById('user-info').innerHTML = '<p class="error">Aucun jeton d\'accès trouvé dans l\'URL.</p>';
         } else {
-            console.log('Code d\'autorisation trouvé :', code);  // Affiche le code dans la console pour déboguer
+            console.log("Token d'accès trouvé:", accessToken); // Log du token pour débogage
 
-            // Configurations OAuth2
-            const clientId = '1303050230220193922'; // Ton Client ID
-            const clientSecret = 'uASYB9vtt7KMrwKbZdx3V3gdGZnUGp3v'; // Ton Client Secret
-            const redirectUri = 'https://axelcorp.netlify.app/panel'; // Ton URL de redirection
-
-            // Échange le code d'autorisation pour obtenir un jeton
-            fetch('https://discord.com/api/oauth2/token', {
-                method: 'POST',
+            // Utiliser le token pour obtenir les informations de l'utilisateur
+            fetch('https://discord.com/api/v10/users/@me', {
+                method: 'GET',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams({
-                    client_id: clientId,
-                    client_secret: clientSecret,
-                    grant_type: 'authorization_code',
-                    code: code,
-                    redirect_uri: redirectUri
-                })
-            })
-            .then(response => response.json())
-            .then(tokenData => {
-                if (tokenData.access_token) {
-                    // Utiliser le token pour obtenir les informations de l'utilisateur
-                    fetch('https://discord.com/api/v10/users/@me', {
-                        method: 'GET',
-                        headers: {
-                            Authorization: `Bearer ${tokenData.access_token}`
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(userData => {
-                        // Afficher les informations de l'utilisateur
-                        const userInfo = `
-                            <img id="avatar" src="https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png" alt="Avatar">
-                            <p class="info">Bienvenue, <strong>${userData.username}</strong>!</p>
-                            <p class="info">ID : ${userData.id}</p>
-                        `;
-                        document.getElementById('user-info').innerHTML = userInfo;
-                    })
-                    .catch(error => {
-                        console.error('Erreur lors de la récupération des informations utilisateur:', error);
-                        document.getElementById('user-info').innerHTML = '<p class="error">Impossible de récupérer les informations utilisateur.</p>';
-                    });
-                } else {
-                    console.error('Échec de l\'obtention du jeton:', tokenData);
-                    document.getElementById('user-info').innerHTML = '<p class="error">Échec de l\'obtention du jeton d\'accès.</p>';
+                    Authorization: `Bearer ${accessToken}`
                 }
             })
+            .then(response => {
+                console.log("Réponse de Discord:", response); // Log de la réponse pour débogage
+                if (!response.ok) {
+                    throw new Error('Erreur lors de l\'appel API');
+                }
+                return response.json();
+            })
+            .then(userData => {
+                // Afficher les informations de l'utilisateur
+                const userInfo = `
+                    <img id="avatar" src="https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png" alt="Avatar">
+                    <p class="info">Bienvenue, <strong>${userData.username}</strong>!</p>
+                    <p class="info">ID : ${userData.id}</p>
+                `;
+                document.getElementById('user-info').innerHTML = userInfo;
+            })
             .catch(error => {
-                console.error('Erreur lors de l\'authentification:', error);
-                document.getElementById('user-info').innerHTML = '<p class="error">Une erreur est survenue lors de l\'authentification.</p>';
+                console.error("Erreur:", error); // Log de l'erreur pour débogage
+                document.getElementById('user-info').innerHTML = '<p class="error">Impossible de récupérer les informations utilisateur.</p>';
             });
         }
     </script>
