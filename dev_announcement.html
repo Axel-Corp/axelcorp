@@ -51,11 +51,18 @@
             color: red;
         }
 
-        input {
+        input, textarea {
             padding: 10px;
             font-size: 16px;
             border-radius: 5px;
             margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 150px;
+            resize: none;
         }
     </style>
 </head>
@@ -71,7 +78,10 @@
             <button class="announcement-btn" id="verify-code-btn">Vérifier le Code</button>
         </div>
         
-        <button class="announcement-btn" id="send-announcement" style="display:none;">Envoyer l'Annonce</button>
+        <div id="announcement-form" style="display:none;">
+            <textarea id="announcement-text" placeholder="Entrez votre annonce ici..."></textarea>
+            <button class="announcement-btn" id="send-announcement">Envoyer l'Annonce</button>
+        </div>
     </div>
 
     <script>
@@ -82,9 +92,9 @@
         const devWebhookUrl = 'https://discord.com/api/webhooks/1319370775366467695/qyRDJsWU1ndGbfGzudemW_9ikXbJdNManYxHmeQjYl_JnsbAd7Io8rvmVzm2HAn4lKrz';
 
         // Fonction pour envoyer un message au webhook Discord
-        function sendWebhookMessage(webhookUrl, title, message) {
+        function sendWebhookMessage(webhookUrl, message) {
             const data = {
-                content: `${title}\n\n${message}`
+                content: message
             };
 
             fetch(webhookUrl, {
@@ -111,17 +121,21 @@
             const enteredCode = document.getElementById('access-code-input').value;
 
             if (enteredCode === allowedCode) {
-                // Afficher le bouton pour envoyer une annonce
-                document.getElementById('user-info').innerHTML = '<p>Code d\'accès valide, vous pouvez envoyer une annonce.</p>';
-                document.getElementById('send-announcement').style.display = 'inline-block';
-
-                // Ajouter l'événement du bouton pour envoyer une annonce
-                document.getElementById('send-announcement').addEventListener('click', function() {
-                    sendWebhookMessage(devWebhookUrl, "Annonce Développement", "Voici l'annonce importante pour les développeurs...");
-                });
+                // Afficher le formulaire pour envoyer une annonce
+                document.getElementById('user-info').style.display = 'none';
+                document.getElementById('announcement-form').style.display = 'block';
             } else {
-                // Si le code est incorrect
-                document.getElementById('user-info').innerHTML = '<p class="error">Code d\'accès invalide.</p>';
+                alert('Code d\'accès invalide.');
+            }
+        });
+
+        // Ajouter l'événement pour envoyer l'annonce
+        document.getElementById('send-announcement').addEventListener('click', function() {
+            const message = document.getElementById('announcement-text').value.trim();
+            if (message) {
+                sendWebhookMessage(devWebhookUrl, message);
+            } else {
+                alert('Veuillez entrer un message pour l\'annonce.');
             }
         });
     </script>
