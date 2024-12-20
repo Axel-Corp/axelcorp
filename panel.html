@@ -125,7 +125,7 @@
                     buttonContainer.innerHTML = `
                         <button class="announcement-btn" id="community-announcement">📢 Annonce Communauté</button>
                         <button class="announcement-btn" id="dev-announcement">📢 Annonce Développement</button>
-                        <button class="announcement-btn" id="dev-announcement">💻 Logiciel AxelCorp</button>
+                        <button class="announcement-btn" id="logi-announcement">💻 Logiciel AxelCorp</button>
                     `;
 
                     // Ajouter les actions des boutons pour ouvrir des fenêtres modales (pop-up)
@@ -139,7 +139,7 @@
                         window.open("dev_announcement.html", "Annonce Développement", "width=600,height=400");
                     });
 
-                    document.getElementById('dev-announcement').addEventListener('click', function() {
+                    document.getElementById('logi-announcement').addEventListener('click', function() {
                         // Ouvrir une nouvelle fenêtre pop-up pour l'annonce Développement
                         window.open("axelcorplogi.html", "Sortie AxelCorp", "width=600,height=400");
                     });
