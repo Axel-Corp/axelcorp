@@ -91,10 +91,13 @@
         // URL du webhook pour les annonces développement
         const devWebhookUrl = 'https://discord.com/api/webhooks/1319370775366467695/qyRDJsWU1ndGbfGzudemW_9ikXbJdNManYxHmeQjYl_JnsbAd7Io8rvmVzm2HAn4lKrz';
 
+        // ID du rôle à mentionner
+        const roleId = '1297872353296121857';
+
         // Fonction pour envoyer un message au webhook Discord
         function sendWebhookMessage(webhookUrl, message) {
             const data = {
-                content: message
+                content: `<@&${roleId}>\n${message}` // Ajout de la mention du rôle au début
             };
 
             fetch(webhookUrl, {
