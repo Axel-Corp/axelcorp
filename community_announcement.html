@@ -50,6 +50,20 @@
         .error {
             color: red;
         }
+
+        input, textarea {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 150px;
+            resize: none;
+        }
     </style>
 </head>
 <body>
@@ -57,72 +71,33 @@
     <div class="announcement-container">
         <img class="discord-logo" src="image.png" alt="Discord Logo">
         <h1>Envoyer une Annonce - Communauté</h1>
+        
         <div id="user-info">
-            <p>Chargement des informations...</p>
+            <p>Veuillez entrer le code d'accès pour continuer.</p>
+            <input type="text" id="access-code-input" placeholder="Entrez le code ici">
+            <button class="announcement-btn" id="verify-code-btn">Vérifier le Code</button>
         </div>
-        <button class="announcement-btn" id="send-announcement" style="display:none;">Envoyer l'Annonce</button>
+        
+        <div id="announcement-form" style="display:none;">
+            <textarea id="announcement-text" placeholder="Entrez votre annonce ici..."></textarea>
+            <button class="announcement-btn" id="send-announcement">Envoyer l'Annonce</button>
+        </div>
     </div>
 
     <script>
-        // Liste des IDs autorisés
-        const allowedUserIds = ['989201861322096661', '1137901772766183524', '940642126805499935'];
+        // Code d'accès autorisé
+        const allowedCode = 'flycorp8120';
 
         // URL du webhook pour les annonces développement
         const devWebhookUrl = 'https://discord.com/api/webhooks/1319370048191860787/nC0W20iycD30xS-BaIJu1i7S89GaTRRAXPwT0dlWmFZT3CN5FVb-0HjOysbyRC9QZl9n';
 
-        // Extraire le fragment de l'URL après le '#'
-        const urlHash = window.location.hash.substring(1); // Retirer le '#' au début de l'URL
-        const params = new URLSearchParams(urlHash);
-        const accessToken = params.get('access_token');  // Récupérer le token
-
-        if (!accessToken) {
-            document.getElementById('user-info').innerHTML = '<p class="error">Aucun jeton d\'accès trouvé dans l\'URL.</p>';
-        } else {
-            // Utiliser le token pour obtenir les informations de l'utilisateur
-            fetch('https://discord.com/api/v10/users/@me', {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erreur lors de l\'appel API');
-                }
-                return response.json();
-            })
-            .then(userData => {
-                // Vérifier si l'ID de l'utilisateur est dans la liste autorisée
-                if (allowedUserIds.includes(userData.id)) {
-                    // Afficher les informations de l'utilisateur si autorisé
-                    const userInfo = `
-                        <p>Bienvenue, <strong>${userData.username}</strong>!</p>
-                        <p>ID : ${userData.id}</p>
-                    `;
-                    document.getElementById('user-info').innerHTML = userInfo;
-
-                    // Afficher le bouton pour envoyer une annonce
-                    document.getElementById('send-announcement').style.display = 'inline-block';
-
-                    // Ajouter l'événement du bouton pour envoyer une annonce
-                    document.getElementById('send-announcement').addEventListener('click', function() {
-                        sendWebhookMessage(devWebhookUrl, "Annonce Développement", "Voici l'annonce importante pour les développeurs...");
-                    });
-
-                } else {
-                    // Si l'utilisateur n'est pas autorisé
-                    document.getElementById('user-info').innerHTML = '<p class="error">Vous n\'avez pas accès à cette page.</p>';
-                }
-            })
-            .catch(error => {
-                document.getElementById('user-info').innerHTML = '<p class="error">Impossible de récupérer les informations utilisateur.</p>';
-            });
-        }
+        // ID du rôle à mentionner
+        const roleId = '1297872353296121857';
 
         // Fonction pour envoyer un message au webhook Discord
-        function sendWebhookMessage(webhookUrl, title, message) {
+        function sendWebhookMessage(webhookUrl, message) {
             const data = {
-                content: `${title}\n\n${message}`
+                content: `<@&${roleId}>\n${message}` // Ajout de la mention du rôle au début
             };
 
             fetch(webhookUrl, {
@@ -143,6 +118,29 @@
                 alert('Erreur de communication avec le webhook.');
             });
         }
+
+        // Ajouter l'événement pour vérifier le code
+        document.getElementById('verify-code-btn').addEventListener('click', function() {
+            const enteredCode = document.getElementById('access-code-input').value;
+
+            if (enteredCode === allowedCode) {
+                // Afficher le formulaire pour envoyer une annonce
+                document.getElementById('user-info').style.display = 'none';
+                document.getElementById('announcement-form').style.display = 'block';
+            } else {
+                alert('Code d\'accès invalide.');
+            }
+        });
+
+        // Ajouter l'événement pour envoyer l'annonce
+        document.getElementById('send-announcement').addEventListener('click', function() {
+            const message = document.getElementById('announcement-text').value.trim();
+            if (message) {
+                sendWebhookMessage(devWebhookUrl, message);
+            } else {
+                alert('Veuillez entrer un message pour l\'annonce.');
+            }
+        });
     </script>
 
 </body>
