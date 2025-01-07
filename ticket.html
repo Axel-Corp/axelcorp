@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soumettre un Ticket</title>
-    <link rel="icon » href="favicon.ico » type="image/x-icon"/>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,6 +51,7 @@
             background-color: #2ecc71;
         }
     </style>
+    <meta name="webhook-ticket" content="${VITE_WEBHOOK_TICKET}">
 </head>
 <body>
     <h1>Soumettre un Ticket</h1>
@@ -61,9 +62,9 @@
         <button type="submit">Envoyer le Ticket</button>
     </form>
 
-    <script>
-        // URL du Webhook Discord (remplacez par votre propre URL de webhook Discord)
-        const discordWebhookUrl = 'https://discord.com/api/webhooks/1314274365390454855/KRTfc8NWdvvk_EdPoW1bwTDrcYGdXOLbYZeWhnRvM-0bxTvlgAeVUvHPc8dM3XTH4FGA';
+    <script type="module">
+        // Récupération de la variable d'environnement depuis la balise meta
+        const discordWebhookUrl = document.querySelector('meta[name="webhook-ticket"]').content;
 
         // Fonction pour envoyer le ticket via Webhook Discord
         async function submitTicket(event) {
