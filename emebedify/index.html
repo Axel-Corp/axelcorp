@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedify - Générateur d'Embed Discord</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Embedify</h1>
+            <p>Créez des embeds Discord ultra-personnalisés avec votre webhook.</p>
+        </header>
+        <form id="embedForm">
+            <label for="username">Nom d'utilisateur (Webhook) :</label>
+            <input type="text" id="username" placeholder="Nom d'utilisateur">
+
+            <label for="avatar">URL de l'avatar :</label>
+            <input type="url" id="avatar" placeholder="https://example.com/avatar.jpg">
+
+            <label for="title">Titre de l'Embed :</label>
+            <input type="text" id="title" placeholder="Titre de l'embed" required>
+
+            <label for="url">Lien du titre (URL) :</label>
+            <input type="url" id="url" placeholder="https://example.com">
+
+            <label for="description">Description :</label>
+            <textarea id="description" placeholder="Ajoutez une description ici" required></textarea>
+
+            <label for="color">Couleur (Hex) :</label>
+            <input type="color" id="color" value="#5865F2" required>
+
+            <label for="image">URL de l'image :</label>
+            <input type="url" id="image" placeholder="https://example.com/image.jpg">
+
+            <label for="authorName">Nom de l'auteur :</label>
+            <input type="text" id="authorName" placeholder="Nom de l'auteur">
+
+            <label for="authorIcon">URL de l'icône de l'auteur :</label>
+            <input type="url" id="authorIcon" placeholder="https://example.com/icon.jpg">
+
+            <label for="fieldTitle">Titre du champ supplémentaire :</label>
+            <input type="text" id="fieldTitle" placeholder="Titre du champ">
+
+            <label for="fieldValue">Valeur du champ :</label>
+            <textarea id="fieldValue" placeholder="Valeur du champ"></textarea>
+
+            <label for="footer">Texte du Footer :</label>
+            <input type="text" id="footer" placeholder="Texte du footer">
+
+            <label for="webhookUrl">URL du Webhook :</label>
+            <input type="url" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." required>
+
+            <button type="submit">Envoyer l'Embed</button>
+        </form>
+
+        <div id="embedPreview">
+            <h2>Aperçu de l'Embed :</h2>
+            <div id="previewContent">
+                <p>Le prévisualisation de l'embed apparaîtra ici...</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 - ∞ Embedify - Générateur d'Embed pour Discord</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
