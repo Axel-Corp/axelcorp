@@ -104,12 +104,24 @@
             <li>Permet aux bibliothécaires de se concentrer sur le service à la clientèle et l'enrichissement de la collection.</li>
         </ul>
         <h3>Le télécharger</h3>
-        <li><a href="bibliogestion.py" downloadonClick="ga('send', 'event', 'Téléchargement', 'click', 'BiblioGestion')"> Télécharger le programme de gestion de bibliothèque</a></li>
+        <li><a  downloadonClick="ga('send', 'event', 'Téléchargement', 'click', 'BiblioGestion')" id="downloadButton"> Télécharger le programme de gestion de bibliothèque</a></li>
 <h3>Les identifiants</h3>
         <li>Identifiant : admin</li>  
 <li>Mot de passe : motdepasse</li>
     </div>
   
+    <script>
+        document.getElementById('downloadButton').addEventListener('click', function() {
+                    const a = document.createElement('a');
+                    a.href = 'bibliogestion.py';
+                    a.download = 'bibliogestion.py';
+                    a.click();
+        
+                    setTimeout(() => {
+                        window.location.href = 'fidelite.html';
+                    }, 1000);
+                });
+        </script>
 
 </body>
 </html>

@@ -131,8 +131,21 @@
         </ul>
         
         <h3>Télécharger SnipVault</h3>
-        <p><a href="snipvault.py" class="button" download onClick="ga('send', 'event', 'Téléchargement', 'click', 'SnipVault')">Télécharger SnipVault</a></p>
+        <p><a id="downloadButton" class="button" download onClick="ga('send', 'event', 'Téléchargement', 'click', 'SnipVault')">Télécharger SnipVault</a></p>
     </div>
+
+    <script>
+        document.getElementById('downloadButton').addEventListener('click', function() {
+                    const a = document.createElement('a');
+                    a.href = 'snipvault.py';
+                    a.download = 'snipvault.py';
+                    a.click();
+        
+                    setTimeout(() => {
+                        window.location.href = 'fidelite.html';
+                    }, 1000);
+                });
+        </script>
 
 </body>
 </html>

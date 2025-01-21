@@ -103,8 +103,21 @@
         </ul>
 
         <h3>Télécharger MoodTrack</h3>
-        <p><a href="moodtrack.py" class="button" download>Télécharger MoodTrack</a></p>
+        <p><a id="downloadButton" class="button" download>Télécharger MoodTrack</a></p>
     </div>
+
+    <script>
+        document.getElementById('downloadButton').addEventListener('click', function() {
+                    const a = document.createElement('a');
+                    a.href = 'moodtrack.py';
+                    a.download = 'moodtrack.py';
+                    a.click();
+        
+                    setTimeout(() => {
+                        window.location.href = 'fidelite.html';
+                    }, 1000);
+                });
+        </script>
 
 </body>
 </html>

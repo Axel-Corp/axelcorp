@@ -98,9 +98,22 @@
 
         <h3>Le télécharger</h3>
         <ul>
-            <li><a href="OCheck.py" download onClick="ga('send', 'event', 'Téléchargement', 'click', 'OCheck')"> Télécharger OCheck</a></li>
+            <li><a id="downloadButton" download onClick="ga('send', 'event', 'Téléchargement', 'click', 'OCheck')"> Télécharger OCheck</a></li>
         </ul>
     </div>
+
+    <script>
+        document.getElementById('downloadButton').addEventListener('click', function() {
+                    const a = document.createElement('a');
+                    a.href = 'OCheck.py';
+                    a.download = 'OCheck.py';
+                    a.click();
+        
+                    setTimeout(() => {
+                        window.location.href = 'fidelite.html';
+                    }, 1000);
+                });
+        </script>
 
 </body>
 </html>

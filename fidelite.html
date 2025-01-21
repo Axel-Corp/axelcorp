@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulaire de Fidélité</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 300px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-size: 0.9em;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Fidélité AxelCorp</h1>
+    <form id="userForm">
+      <label for="pseudo">Pseudo Discord :</label>
+      <input type="text" id="pseudo" name="pseudo" required placeholder="Entrez votre pseudo discord">
+
+      <label for="email">Email :</label>
+      <input type="email" id="email" name="email" required placeholder="Entrez votre email">
+
+      <button type="submit">Obtenir le code</button>
+    </form>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    // Lien du webhook Discord
+    const webhookURL = "https://discord.com/api/webhooks/1331324409302225027/4w9SCjylPS5fSjMN4GACaJTTRqAW8shazQClhqa3XrvdjpzBB7PpDrqg4WNNRkNJyEFe";
+
+    // Fonction pour générer un code aléatoire
+    function generateRandomCode() {
+      return Math.random().toString(36).substring(2, 10).toUpperCase();
+    }
+
+    // Écouteur d'événements pour le formulaire
+    document.getElementById("userForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      // Récupérer les données du formulaire
+      const pseudo = document.getElementById("pseudo").value;
+      const email = document.getElementById("email").value;
+      const code = generateRandomCode();
+
+      // Construire le message pour Discord
+      const message = {
+        content: `Nouveau formulaire rempli !\n**Pseudo** : ${pseudo}\n**Email** : ${email}\n**Code aléatoire** : ${code}`
+      };
+
+      // Envoyer les données au webhook Discord
+      fetch(webhookURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(message)
+      })
+        .then(response => {
+          if (response.ok) {
+            document.getElementById("status").textContent = "Formulaire envoyé avec succès !";
+          } else {
+            document.getElementById("status").textContent = "Erreur lors de l'envoi. Réessayez.";
+          }
+        })
+        .catch(error => {
+          console.error("Erreur :", error);
+          document.getElementById("status").textContent = "Erreur de connexion au webhook.";
+        });
+
+      // Réinitialiser le formulaire
+      document.getElementById("userForm").reset();
+    });
+  </script>
+</body>
+</html>

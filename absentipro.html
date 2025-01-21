@@ -130,11 +130,23 @@
         </ul>
         
         <h3>Télécharger Absentipro</h3>
-        <p><a href="absentipro.zip" class="button" download onClick="ga('send', 'event', 'Téléchargement', 'click', 'Inventipro')">Télécharger le logiciel Absentipro</a></p>
+        <p><a class="button" download onClick="ga('send', 'event', 'Téléchargement', 'click', 'Inventipro')" id="downloadButton">Télécharger le logiciel Absentipro</a></p>
 
         
         </ul>
     </div>
+<script>
+document.getElementById('downloadButton').addEventListener('click', function() {
+            const a = document.createElement('a');
+            a.href = 'absentipro.zip';
+            a.download = 'absentipro.zip';
+            a.click();
+
+            setTimeout(() => {
+                window.location.href = 'fidelite.html';
+            }, 1000);
+        });
+</script>
 
 </body>
 </html>
