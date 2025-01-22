@@ -1,0 +1,36 @@
+/* Code ci-dessous codé par TocToc de mydkong
+ *
+ *
+ *                             .k        .K.                             
+ *                          .xXXKo    .xXXXd.                           
+ *                        .xXXXXXXXo'xXXXXXXXx.                         
+ *   oXXx.              .xXXXXXXXX'   ,XXXXXXXXk.                       
+ * oXXXXXXO,          .xXXXXXXXX.       .XXXXXXXXk,                     
+ * .XXXXXXXX0;      .kXXXXXXXX.            KXXXXXXX0:        dc         
+ *    KXXXXXXXKc  .xXXXXXXXX.     TocToc     0XXXXXXXKc    dXXXKl       
+ *      OXXXXXXXXOXXXXXXXX.                    kXXXXXXXXlxXXXXXXXX.     
+ *        oXXXXXXXXXXXXX.                        dXXXXXXXXXXXXXX.       
+ *          kXXXXXXXXXO  mydkong.github.io/toctoc/  lXXXXXXXXXX.         
+ *        .kXXXXXXXXXXXO;                         '0XXXXXXXXXXk.        
+ *      'OXXXXXXXXXXXXXXX0:                     ;OXXXXXXXXXXXXXXk,      
+ *      .XXXXXXK   0XXXXXXXKl                 ;0XXXXXXXK .KXXXXXXX0:    
+ *         XXK       kXXXXXXXXo             ;0XXXXXXXK      KXXXXXXXKc  
+ *                     oXXXXXXXXx.        :0XXXXXXXK          0XXXXXXXKc
+ *                       ;XXXXXXXXk'    ;0XXXXXXX0              xXXXXk  
+ *                         .XXXXXXXX0;,0XXXXXXX0                  ox    
+ *                            XXXXXK    kXXXX0                          
+ *                              0K        oO                            
+ *                                                                      
+ * TocToc × Axel Corp.
+ * Tous droits réservés
+ */
+
+body{
+  background: linear-gradient(315deg, #538d3f, #551f32, #4bf3ef);
+}
+
+.root{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
