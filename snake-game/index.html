@@ -6,7 +6,10 @@
     <title>Axel Corp.'s Snake</title>
 </head>
 <body>
-    <div class="root"><canvas id="canvas" width="500" height="500"></canvas></div>
+    <div class="root">
+        <canvas id="canvas" width="500" height="500"></canvas>
+        <button>&nbsp;Recharger&nbsp;</button>
+    </div>
 
     <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
 
@@ -227,6 +230,10 @@
         snake.setDirection(newDirection);
       }
     });
+
+    document.querySelector("button").addEventListener("click", ()=>{
+        window.location.reload();
+    })
     </script>
 </body>
 </html>
