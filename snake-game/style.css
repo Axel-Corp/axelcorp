@@ -35,3 +35,14 @@ body{
   align-items: center;
   justify-content: center;
 }
+
+button{
+  border: none;
+  height: 30px;
+  width: 100%;
+  cursor: pointer;
+}
+
+a{
+  cursor: pointer;
+}
