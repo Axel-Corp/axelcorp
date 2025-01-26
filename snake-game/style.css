@@ -38,11 +38,18 @@ body{
 
 button{
   border: none;
+  border-radius: 30px;
   height: 30px;
   width: 100%;
   cursor: pointer;
   background: #538d3f;
-  color: #538d3f;
+  color: #000000;
+  transition: 0.2s ease;
+}
+
+button:hover{
+  background: #9bcb8a;
+  border-radius: 10px;
 }
 
 a{
