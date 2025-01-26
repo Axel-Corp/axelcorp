@@ -35,3 +35,16 @@ body{
   align-items: center;
   justify-content: center;
 }
+
+button{
+  border: none;
+  height: 30px;
+  width: 100%;
+  cursor: pointer;
+  background: #538d3f;
+  color: #538d3f;
+}
+
+a{
+  cursor: pointer;
+}
