@@ -60,7 +60,9 @@ button:hover{
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #538d3f;
   border: none;
+  gap: 10px;
   border-radius: 0 0 30px 30px;
 }
 
