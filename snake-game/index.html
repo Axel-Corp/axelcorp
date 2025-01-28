@@ -260,6 +260,22 @@
     document.querySelector("button").addEventListener("click", ()=>{
         window.location.reload();
     })
+
+    document.querySelector(".left-arrow").addEventListener("click", ()=>{
+        snake.setDirection("left");
+    })
+
+    document.querySelector(".up-arrow").addEventListener("click", ()=>{
+        snake.setDirection("up");
+    })
+
+    document.querySelector(".right-arrow").addEventListener("click", ()=>{
+        snake.setDirection("right");
+    })
+
+    document.querySelector(".down-arrow").addEventListener("click", ()=>{
+        snake.setDirection("down");
+    })
     </script>
 </body>
 </html>
