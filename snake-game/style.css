@@ -78,6 +78,7 @@ a{
 
 .arrow{
   display: flex;
+  cursor: pointer;
 }
 
 .left-arrow{
