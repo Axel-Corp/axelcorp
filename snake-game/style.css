@@ -76,6 +76,10 @@ a{
   justify-content: center;
 }
 
+.arrow{
+  display: flex;
+}
+
 .left-arrow{
   border: none;
   border-radius: 50%;
