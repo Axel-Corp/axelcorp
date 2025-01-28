@@ -33,7 +33,7 @@ body{
 .root{
   background: #000;
   color: #fff;
-  display: flex;
+  display: flex; 
   align-items: center;
   justify-content: center;
 }
