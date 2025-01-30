@@ -6,9 +6,34 @@
     <title>Axel Corp.'s Snake</title>
 </head>
 <body>
-    <div class="root">
-        <canvas id="canvas" width="500" height="500"></canvas>
-        <button hidden>&nbsp;Rejouer&nbsp;</button>
+    <div class="root" align="center">
+        <div>
+            <div class="flex">
+                <img src="//mydkong.github.io/favicon.ico" class="icon">
+                <div class="header">
+                    <p class="h1">Jeu du serpent</p>
+                    <p class="italic">Par TocToc</p>
+                </div>
+            </div>
+            <div class="body">
+                <canvas id="canvas" width="500" height="500"></canvas>
+                <button hidden>&nbsp;Rejouer&nbsp;</button>
+            </div>
+            <div class="controls">
+                <div class="left-arrow arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
+                </div>
+                <div class="up-arrow arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg>
+                </div>
+                <div class="right-arrow arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000"><path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z"/></svg>
+                </div>
+                <div class="down-arrow arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000"><path d="M440-800v487L216-537l-56 57 320 320 320-320-56-57-224 224v-487h-80Z"/></svg>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
@@ -234,6 +259,22 @@
 
     document.querySelector("button").addEventListener("click", ()=>{
         window.location.reload();
+    })
+
+    document.querySelector(".left-arrow").addEventListener("click", ()=>{
+        snake.setDirection("left");
+    })
+
+    document.querySelector(".up-arrow").addEventListener("click", ()=>{
+        snake.setDirection("up");
+    })
+
+    document.querySelector(".right-arrow").addEventListener("click", ()=>{
+        snake.setDirection("right");
+    })
+
+    document.querySelector(".down-arrow").addEventListener("click", ()=>{
+        snake.setDirection("down");
     })
     </script>
 </body>
