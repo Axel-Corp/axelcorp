@@ -26,6 +26,9 @@
  */
 
 body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(315deg, #538d3f, #551f32, #4bf3ef);
   background-repeat: no-repeat;
 }
