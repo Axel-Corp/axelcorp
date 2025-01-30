@@ -33,9 +33,6 @@ body{
 .root{
   background: #fff;
   color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
   width: 420px;
   height: 75%;
