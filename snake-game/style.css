@@ -34,10 +34,13 @@ body{
 }
 
 .root{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #fff;
   color: #000;
   position: relative;
-  width: 420px;
+  width: 500px;
   height: 75%;
   overflow: hidden;
   border-radius: 15px;
