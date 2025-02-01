@@ -29,6 +29,11 @@
   font-family: Arial, sans-serif;
 }
 
+a{
+  cursor: pointer;
+  text-decoration: none;
+}
+
 body{
   display: flex;
   align-items: center;
