@@ -25,6 +25,23 @@
  * Tous droits réservés
  */
 
+*{
+  font-family: Arial, sans-serif;
+}
+
+.icon{
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+}
+
+a{
+  cursor: pointer;
+  text-decoration: none;
+  width: 15px;
+  height: 15px;
+}
+
 body{
   display: flex;
   align-items: center;
@@ -47,9 +64,18 @@ body{
   box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-button{
+.flex{
+  background: #57ff70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.rejouer{
   border: none;
-  border-radius: 30px 30px 0 0;
+  border-radius: 30px;
   height: 30px;
   width: 100%;
   cursor: pointer;
@@ -58,9 +84,28 @@ button{
   transition: 0.2s ease;
 }
 
-button:hover{
+.rejouer:hover{
   background: #9bcb8a;
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px;
+}
+
+.link-snake-button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 30px;
+  height: 30px;
+  width: 100%;
+  cursor: pointer;
+  background: #538d3f;
+  color: #000000;
+  transition: 0.2s ease;
+}
+
+.link-snake-button:hover{
+  background: #9bcb8a;
+  border-radius: 10px;
 }
 
 .controls{
@@ -70,7 +115,7 @@ button:hover{
   background: #538d3f;
   border: none;
   gap: 10px;
-  border-radius: 0 0 30px 30px;
+  border-radius: 30px;
 }
 
 a{

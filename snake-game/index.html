@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
-    <title>Axel Corp.'s Snake</title>
+    <title>Snake</title>
 </head>
 <body>
     <div class="root" align="center">
@@ -12,12 +12,15 @@
                 <img src="//mydkong.github.io/favicon.ico" class="icon">
                 <div class="header">
                     <p class="h1">Jeu du serpent</p>
-                    <p class="italic">Par TocToc</p>
+                    <p class="italic">Par&nbsp;<a width="30" height="30" href="//axelcorp.netlify.app" target="_blank">TocToc</a></p>
+                </div>
+                <div class="link-snake-div">
+                    <button class="link-snake-button"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000"><path d="M480-120v-80h280v-560H480v-80h280q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H480Zm-80-160-55-58 102-102H120v-80h327L345-622l55-58 200 200-200 200Z"/></svg>Aller sur TocToc</button>
                 </div>
             </div>
             <div class="body">
                 <canvas id="canvas" width="500" height="500"></canvas>
-                <button hidden>&nbsp;Rejouer&nbsp;</button>
+                <button hidden class="rejouer">&nbsp;Rejouer&nbsp;</button>
             </div>
             <div class="controls">
                 <div class="left-arrow arrow">
@@ -74,7 +77,8 @@
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText("Perdu !", width / 2, height / 2);
-      document.querySelector("button").hidden=false;
+      document.querySelector(".rejouer").hidden=false;
+      document.querySelector(".controls").innerHTML="";
     };
 
     var circle = function (x, y, radius, fillCircle) {
@@ -257,7 +261,7 @@
       }
     });
 
-    document.querySelector("button").addEventListener("click", ()=>{
+    document.querySelector(".rejouer").addEventListener("click", ()=>{
         window.location.reload();
     })
 
@@ -275,6 +279,10 @@
 
     document.querySelector(".down-arrow").addEventListener("click", ()=>{
         snake.setDirection("down");
+    })
+
+    document.querySelector(".link-snake-div").addEventListener("click", ()=>{
+        window.location.href="//mydkong.github.io/toctoc";
     })
     </script>
 </body>
