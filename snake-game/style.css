@@ -29,6 +29,12 @@
   font-family: Arial, sans-serif;
 }
 
+img{
+  border: none;
+  border-radius: 50%;
+  background: #fff;
+}
+
 a{
   cursor: pointer;
   text-decoration: none;
