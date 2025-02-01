@@ -71,9 +71,25 @@ body{
   transition: 0.2s ease;
 }
 
-button:hover{
+.rejouer:hover{
   background: #9bcb8a;
   border-radius: 10px 10px 0 0;
+}
+
+.link-snake-button{
+  border: none;
+  border-radius: 30px;
+  height: 30px;
+  width: 100%;
+  cursor: pointer;
+  background: #538d3f;
+  color: #000000;
+  transition: 0.2s ease;
+}
+
+.link-snake-button:hover{
+  background: #9bcb8a;
+  border-radius: 10px;
 }
 
 .controls{
