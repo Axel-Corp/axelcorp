@@ -25,6 +25,10 @@
  * Tous droits réservés
  */
 
+*{
+  font-family: Arial, sans-serif;
+}
+
 body{
   display: flex;
   align-items: center;
