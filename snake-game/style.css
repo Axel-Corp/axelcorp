@@ -32,6 +32,8 @@
 a{
   cursor: pointer;
   text-decoration: none;
+  width: 15px;
+  height: 15px;
 }
 
 body{
