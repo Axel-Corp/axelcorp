@@ -1,0 +1,3 @@
+Bugs :
+#1 : Bouton rejouer en dehors de l'espace de jeu et occupe tout l'écran
+#2 : Header sans styles
