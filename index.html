@@ -86,6 +86,41 @@
             background-color: #c43b1f;
             transform: translateY(0);
         }
+
+        /* Cookie banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 16px;
+            z-index: 1000;
+        }
+        .cookie-banner a {
+            color: #FF5632;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .cookie-banner a:hover {
+            color: #e04c2e;
+        }
+        .cookie-banner button {
+            background-color: #FF5632;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+        .cookie-banner button:hover {
+            background-color: #e04c2e;
+        }
     </style>
 </head>
 <body>
@@ -123,5 +158,11 @@
             <a href="tuto.html">Tuto d'utilisation</a>
         </div>
     </main>
+
+    <!-- Cookie Banner -->
+    <div class="cookie-banner">
+        Ce site utilise des cookies pour améliorer votre expérience. <a href="cookies.html">En savoir plus</a>
+        <button onclick="document.querySelector('.cookie-banner').style.display='none';">Accepter</button>
+    </div>
 </body>
 </html>
