@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Créateur de Graphiques</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script> <!-- Librairie PapaParse pour lire le CSV -->
+  <style>
+    /* Style général */
+    body {
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #fd4f44; /* Couleur rouge-orangée */
+    }
+
+    .chart-container {
+      margin: 20px 0;
+    }
+
+    .controls {
+      margin-top: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      background-color: #333;
+      border: 1px solid #444;
+      color: #f0f0f0;
+      font-family: monospace;
+      margin-bottom: 10px;
+    }
+
+    select, button {
+      background-color: #fd4f44; /* Couleur rouge-orangée */
+      border: none;
+      color: #fff;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    select {
+      width: 200px;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: #e03c36;
+    }
+
+    .download {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .upload {
+      margin-top: 10px;
+    }
+
+    input[type="file"] {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Créateur de Graphiques</h1>
+    <div class="chart-container">
+      <canvas id="myChart"></canvas>
+    </div>
+    <div class="controls">
+      <label for="dataInput">Données (CSV) : </label>
+      <textarea id="dataInput" rows="5" placeholder="Exemple : 10,20,30,40"></textarea><br>
+      
+      <label for="chartType">Type de graphique : </label>
+      <select id="chartType">
+        <option value="bar">Barres</option>
+        <option value="line">Lignes</option>
+        <option value="pie">Camembert</option>
+      </select><br>
+
+      <button id="generateChart">Générer Graphique</button>
+    </div>
+
+    <!-- Section d'importation du fichier CSV -->
+    <div class="upload">
+      <label for="fileInput">Importer un fichier CSV : </label>
+      <input type="file" id="fileInput" accept=".csv">
+    </div>
+
+    <div class="download">
+      <button id="downloadChart">Télécharger le Graphique</button>
+    </div>
+  </div>
+
+  <script>
+    let currentChart = null;  // Variable pour garder une référence au graphique généré
+
+    // Fonction pour générer un graphique avec les données du fichier CSV ou de la zone de texte
+    function generateGraph(dataArray, chartType) {
+      const ctx = document.getElementById('myChart').getContext('2d');
+
+      // Si un graphique existe déjà, on le supprime avant de créer un nouveau
+      if (currentChart) {
+        currentChart.destroy();
+      }
+
+      // Créer un graphique avec les données saisies
+      currentChart = new Chart(ctx, {
+        type: chartType,
+        data: {
+          labels: dataArray.map((_, index) => `Point ${index + 1}`),
+          datasets: [{
+            label: 'Données Utilisateur',
+            data: dataArray,
+            backgroundColor: '#fd4f44', /* Rouge orangé */
+            borderColor: '#d43f37',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                color: '#444',
+              },
+            },
+            x: {
+              grid: {
+                color: '#444',
+              },
+            }
+          }
+        }
+      });
+
+      // Afficher le bouton de téléchargement après la génération du graphique
+      document.querySelector('.download').style.display = 'block';
+    }
+
+    // Générer le graphique à partir des données de la zone de texte
+    document.getElementById('generateChart').addEventListener('click', function() {
+      const dataInput = document.getElementById('dataInput').value;
+      const dataArray = dataInput.split(',').map(item => parseInt(item.trim()));
+
+      // Si aucune donnée n'est saisie, afficher une alerte
+      if (dataArray.length === 0 || dataArray.includes(NaN)) {
+        alert('Veuillez entrer des données valides sous forme de CSV.');
+        return;
+      }
+
+      const chartType = document.getElementById('chartType').value;
+      generateGraph(dataArray, chartType);
+    });
+
+    // Importer le fichier CSV
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      
+      if (!file) return;
+
+      Papa.parse(file, {
+        complete: function(results) {
+          const dataArray = results.data[0].map(item => parseFloat(item.trim())).filter(item => !isNaN(item));
+          
+          if (dataArray.length === 0) {
+            alert('Le fichier CSV ne contient pas de données valides.');
+            return;
+          }
+
+          const chartType = document.getElementById('chartType').value;
+          generateGraph(dataArray, chartType);
+        },
+        header: false
+      });
+    });
+
+    // Télécharger le graphique en tant qu'image
+    document.getElementById('downloadChart').addEventListener('click', function() {
+      const link = document.createElement('a');
+      link.href = currentChart.toBase64Image();
+      link.download = 'graphique.png';
+      link.click();
+    });
+  </script>
+</body>
+</html>
