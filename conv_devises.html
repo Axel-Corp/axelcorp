@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertisseur de Devises</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #121212;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            color: #ff5c50;
+        }
+        input, select, button {
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        #history {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .h3 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Convertisseur de devises</h2>
+        <input type="number" id="amount" placeholder="Montant" value="1">
+        <select id="fromCurrency"></select>
+        <select id="toCurrency"></select>
+        <button onclick="convertCurrency()">Convertir</button>
+        <p id="result"></p>
+        <div id="history">
+            <h3 class="h3">Historique des conversions</h3>
+            <ul id="historyList"></ul>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://api.exchangerate-api.com/v4/latest/";
+        const fromCurrency = document.getElementById("fromCurrency");
+        const toCurrency = document.getElementById("toCurrency");
+        const amount = document.getElementById("amount");
+        const result = document.getElementById("result");
+        const historyList = document.getElementById("historyList");
+
+        fetch(API_URL + "USD")
+            .then(res => res.json())
+            .then(data => {
+                const currencies = Object.keys(data.rates);
+                currencies.forEach(currency => {
+                    fromCurrency.innerHTML += `<option value="${currency}">${currency}</option>`;
+                    toCurrency.innerHTML += `<option value="${currency}">${currency}</option>`;
+                });
+                fromCurrency.value = "USD";
+                toCurrency.value = "EUR";
+            });
+
+        function convertCurrency() {
+            fetch(API_URL + fromCurrency.value)
+                .then(res => res.json())
+                .then(data => {
+                    const rate = data.rates[toCurrency.value];
+                    const converted = (amount.value * rate).toFixed(2);
+                    result.innerText = `Résultat : ${converted} ${toCurrency.value}`;
+                    
+                    const historyItem = document.createElement("li");
+                    historyItem.innerText = `${amount.value} ${fromCurrency.value} → ${converted} ${toCurrency.value}`;
+                    historyList.appendChild(historyItem);
+                });
+        }
+    </script>
+</body>
+</html>
