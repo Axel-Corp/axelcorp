@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PCKQ5BNR');</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Présentation du Logiciel SafePass</title>
+    <link rel="icon » href="favicon.ico » type="image/x-icon"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #2c2c2c;
+            color: #ffffff;
+        }
+        h1, h2, h3 {
+            color: #fc4f44
+        ;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: square;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background: #1b1b1b;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        a {
+            color: #fc4f44;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .button {
+            background-color: #fc4f44;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+        .p {
+            color: white;
+        }
+    </style>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1BVQ1K925Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1BVQ1K925Z');
+</script>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCKQ5BNR"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="container">
+        <h1>Logiciel SafePass</h1>
+        <p>SafePass est un gestionnaire de mots de passe sécurisé permettant de stocker et gérer vos identifiants en toute simplicité.</p>
+
+        <h2>Fonctionnalités Principales :</h2>
+        <ul>
+            <li><strong>Stockage sécurisé :</strong> Cryptage des mots de passe avec un algorithme robuste.</li>
+            <li><strong>Génération automatique :</strong> Création de mots de passe forts et uniques.</li>
+            <li><strong>Autocomplétion :</strong> Remplissage automatique des identifiants sur les sites web.</li>
+            <li><strong>Authentification multi-facteurs :</strong> Sécurisation supplémentaire via un second facteur.</li>
+            <li><strong>Accès multi-appareils :</strong> Synchronisation sécurisée sur plusieurs dispositifs.</li>
+        </ul>
+
+        <h2>Technologies Utilisées :</h2>
+        <ul>
+            <li><strong>Python</strong> : Langage de programmation principal.</li>
+            <li><strong>Flask</strong> : Framework web pour l'interface utilisateur.</li>
+            <li><strong>SQLite</strong> : Base de données pour le stockage des identifiants.</li>
+            <li><strong>AES-256</strong> : Algorithme de cryptage pour protéger les données.</li>
+        </ul>
+
+        <h2>Avantages :</h2>
+        <ul>
+            <li>Protection optimale des données sensibles.</li>
+            <li>Facilité d'utilisation avec une interface intuitive.</li>
+            <li>Accès rapide et sécurisé aux mots de passe enregistrés.</li>
+        </ul>
+        
+        <h3>Télécharger SafePass</h3>
+        <p><a class="button" download onClick="ga('send', 'event', 'Téléchargement', 'click', 'SafePass')" id="downloadButton">Télécharger le logiciel SafePass</a></p>
+
+        
+        </ul>
+    </div>
+<script>
+document.getElementById('downloadButton').addEventListener('click', function() {
+            const a = document.createElement('a');
+            a.href = 'safepass.py';
+            a.download = 'safepass.py';
+            a.click();
+
+            setTimeout(() => {
+                window.location.href = 'fidelite.html';
+            }, 1000);
+        });
+</script>
+
+</body>
+</html>
