@@ -10,7 +10,7 @@
     <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Axel Corp - Bot Discord</title>
+    <title>Axel Corp - Partenaires</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <style>
         body {
@@ -86,21 +86,48 @@
             background-color: #c43b1f;
             transform: translateY(0);
         }
+
+        /* Cookie banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 16px;
+            z-index: 1000;
+        }
+        .cookie-banner a {
+            color: #FF5632;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .cookie-banner a:hover {
+            color: #e04c2e;
+        }
+        .cookie-banner button {
+            background-color: #FF5632;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+        .cookie-banner button:hover {
+            background-color: #e04c2e;
+        }
     </style>
 </head>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-1BVQ1K925Z');
-</script>
 <body>
     <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCKQ5BNR"
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCKQ5BNR"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-
     <header>
         <h1>Axel Corp</h1>
         <nav>
@@ -110,27 +137,22 @@
             <a href="partner.html">Partenaires</a>
         </nav>
     </header>
-
-    <!-- Contenu principal -->
-    <div id="main" class="main-content">
-        <h1>Bienvenue sur Axel Corp</h1>
-        <h2>Bot Discord à télécharger</h2>
-        <h4>Attention ! Nos Bots sont sous discord.js. Il faut l'installer via cette commande : npm install discord.js</h4>
-        <h4>Merci de mettre tous vos logiciels de la Axel Corp dans le même dossier : Documents/AxelCorp</h4>
-        <h4>Notre support Technique est sur Discord</h4>
+    <main>
+        <h2>Nos Partenaires</h2>
 
         <div class="program-links">
-            <a href="https://github.com/Axel-Corp/eventbot">EventBot (Bot pour les Evenements)</a>
-            <a href="https://github.com/Axel-Corp/aegisbot">AegisBot (Bot sur la modération et les logs)</a>
-            <a href="https://github.com/Axel-Corp/ticketmaster">TicketMaster (Bot pour les tickets)</a>
-            <a href="https://github.com/Axel-Corp/statsmaster">StatsMaster (Bot sur les statistiques)</a>
-            <a href="https://github.com/Axel-Corp/AgoraBot">AgoraBot (Mélange de EventBot, AegisBot et TicketMaster)</a>
-
+            <a href="/parteners/techassist.html">TechAssist (Pub)</a>
+            <a href="/parteners/hypeprotect.html">HypeProtect</a>
+            <a href="/parteners/espacecosy.html">L'Espace Cosy</a>
 
         </div>
 
+    </main>
+
+    <!-- Cookie Banner -->
+    <div class="cookie-banner">
+        Ce site utilise des cookies pour améliorer votre expérience. <a href="cookies.html">En savoir plus</a>
+        <button onclick="document.querySelector('.cookie-banner').style.display='none';">Accepter</button>
     </div>
-
-
 </body>
 </html>
