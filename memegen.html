@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memegen Pro</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #2c2c2c;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #fc4f44;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1b1b1b;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"], input[type="url"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #fc4f44;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #memeContainer {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+            margin-top: 20px;
+        }
+        #meme {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .text {
+            position: absolute;
+            width: 100%;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+        .bottom-text {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+        #downloadBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+        #downloadBtn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Crée ton Meme Pro</h1>
+        <input type="text" id="topText" placeholder="Texte du haut" />
+        <input type="text" id="bottomText" placeholder="Texte du bas" />
+        <input type="url" id="imageURL" placeholder="URL de l'image (exemple : meme.jpg)" />
+        <button onclick="genererMeme()">Générer Meme</button>
+
+        <div id="memeContainer">
+            <img id="meme" src="" alt="Meme généré" />
+            <div class="text" id="topTextDisplay"></div>
+            <div class="bottom-text" id="bottomTextDisplay"></div>
+        </div>
+
+        <button id="downloadBtn" onclick="telechargerMeme()">Télécharger le Meme</button>
+    </div>
+
+    <script>function genererMeme() {
+        const topText = document.getElementById('topText').value;
+        const bottomText = document.getElementById('bottomText').value;
+        const imageURL = document.getElementById('imageURL').value;
+    
+        if (!imageURL) {
+            alert('Veuillez entrer une URL d\'image.');
+            return;
+        }
+    
+        const memeImage = document.getElementById('meme');
+        memeImage.src = imageURL;
+    
+        document.getElementById('topTextDisplay').innerText = topText;
+        document.getElementById('bottomTextDisplay').innerText = bottomText;
+    
+        document.getElementById('downloadBtn').style.display = 'inline-block';  // Afficher le bouton de téléchargement
+    }
+    
+    function telechargerMeme() {
+        const memeCanvas = document.createElement('canvas');
+        const ctx = memeCanvas.getContext('2d');
+    
+        const memeImage = document.getElementById('meme');
+        memeCanvas.width = memeImage.width;
+        memeCanvas.height = memeImage.height;
+    
+        // Dessiner l'image sur le canvas
+        ctx.drawImage(memeImage, 0, 0);
+    
+        // Ajouter le texte du haut
+        const topText = document.getElementById('topText').value;
+        ctx.font = '40px Arial';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        ctx.fillText(topText, memeCanvas.width / 2, 20);
+    
+        // Ajouter le texte du bas
+        const bottomText = document.getElementById('bottomText').value;
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(bottomText, memeCanvas.width / 2, memeCanvas.height - 20);
+    
+        // Télécharger l'image
+        const imageURL = memeCanvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = imageURL;
+        link.download = 'meme.png';
+        link.click();
+    }
+    </script>
+</body>
+</html>
