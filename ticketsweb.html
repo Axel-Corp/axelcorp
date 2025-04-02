@@ -252,7 +252,7 @@
             let canSubmit = true;
             
             // URL du webhook depuis les variables d'environnement Netlify
-            const webhookUrl = '%%TOKEN_WEBHOOK%%';
+            const webhookUrl = '%TOKEN_WEBHOOK%';
             
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
