@@ -239,6 +239,7 @@
     </div>
 
     <script>
+        const webhookUrl = process.env.WEBHOOK_TOKEN
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('ticket-form');
             const errorMessage = document.getElementById('error-message');
@@ -252,7 +253,7 @@
             let canSubmit = true;
             
             // URL du webhook depuis les variables d'environnement Netlify
-            const webhookUrl = ${process.env.TOKEN_WEBHOOK};
+            const webhookUrl = webhookUrl;
             
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
