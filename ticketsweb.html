@@ -251,22 +251,8 @@
             const cooldownPeriod = 300000; // 5 minutes en millisecondes
             let canSubmit = true;
             
-            // Récupération de l'URL du webhook depuis les variables d'environnement Netlify
-            // (Ceci sera remplacé par Netlify lors du build)
+            // URL du webhook depuis les variables d'environnement Netlify
             const webhookUrl = '%%TOKEN_WEBHOOK%%';
-            
-            // En mode développement, utilisez une variable locale si disponible
-            const devWebhookUrl = 'https://discord.com/api/webhooks/votre-webhook-de-test';
-            
-            // Fonction pour obtenir l'URL finale
-            function getWebhookUrl() {
-                // Si on est en production et que le placeholder a été remplacé
-                if (webhookUrl && webhookUrl !== '%%TOKEN_WEBHOOK%%') {
-                    return webhookUrl;
-                }
-                // En développement, utilisez la variable locale
-                return devWebhookUrl;
-            }
             
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
@@ -369,7 +355,7 @@
                     embeds: [embed]
                 };
                 
-                return fetch(getWebhookUrl(), {
+                return fetch(webhookUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
