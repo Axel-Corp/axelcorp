@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webhook Discord - Créateur de message</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #181818;
+      color: #ddd;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background-color: #2c2f38;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin: 50px auto;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff6f61;
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+      color: #bbb;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #444;
+      border-radius: 6px;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      background-color: #333;
+      color: #eee;
+    }
+
+    textarea {
+      font-family: 'Arial', sans-serif;
+      resize: vertical;
+      height: 120px;
+    }
+
+    .color-picker {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .color-picker input {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background-color: #ff6f61;
+      color: #fff;
+      padding: 15px;
+      font-size: 1.2rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+      background-color: #e84c41;
+    }
+
+    .output {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #333;
+      border: 1px solid #444;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .output h3 {
+      color: #ff6f61;
+    }
+
+    .output pre {
+      background-color: #111;
+      color: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Créateur de Webhook Discord</h1>
+
+    <!-- Formulaire de création du webhook -->
+    <div class="form-group">
+      <label for="content">Message (contenu)</label>
+      <textarea id="content" placeholder="Entrez le contenu du message..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="username">Nom d'utilisateur (facultatif)</label>
+      <input type="text" id="username" placeholder="Nom d'utilisateur à afficher" />
+    </div>
+
+    <div class="form-group">
+      <label for="avatar">URL de l'image de profil (facultatif)</label>
+      <input type="url" id="avatar" placeholder="URL de l'image de profil" />
+    </div>
+
+    <div class="form-group">
+      <label for="title">Titre (facultatif)</label>
+      <input type="text" id="title" placeholder="Entrez un titre pour le message" />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description (facultatif)</label>
+      <textarea id="description" placeholder="Entrez une description pour le message"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="image_url">URL de l'image principale (facultatif)</label>
+      <input type="url" id="image_url" placeholder="URL de l'image principale" />
+    </div>
+
+    <div class="form-group">
+      <label for="color">Couleur du message (facultatif)</label>
+      <div class="color-picker">
+        <input type="color" id="color" value="#ff0000" />
+        <span>Choisir la couleur du bord de l'embed</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="timestamp">Timestamp (facultatif)</label>
+      <input type="datetime-local" id="timestamp" />
+    </div>
+
+    <div class="form-group">
+      <label for="buttonLabel">Label du bouton (facultatif)</label>
+      <input type="text" id="buttonLabel" placeholder="Texte du bouton" />
+    </div>
+
+    <div class="form-group">
+      <label for="buttonURL">URL du bouton (facultatif)</label>
+      <input type="url" id="buttonURL" placeholder="URL du bouton" />
+    </div>
+
+    <div class="form-group">
+      <label for="webhookURL">URL du Webhook Discord</label>
+      <input type="url" id="webhookURL" placeholder="Entrez l'URL du Webhook" />
+    </div>
+
+    <button class="btn-primary" onclick="generateWebhookMessage()">Générer Webhook</button>
+    <button class="btn-primary" onclick="sendWebhookMessage()" style="margin-top: 10px;">Envoyer Webhook</button>
+
+    <!-- Section d'affichage du JSON généré -->
+    <div class="output" id="output">
+      <h3>Webhook JSON généré :</h3>
+      <pre id="jsonOutput"></pre>
+    </div>
+  </div>
+
+  <script>
+    function generateWebhookMessage() {
+      const content = document.getElementById('content').value;
+      const username = document.getElementById('username').value;
+      const avatar = document.getElementById('avatar').value;
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const image_url = document.getElementById('image_url').value;
+      const color = document.getElementById('color').value;
+      const timestamp = document.getElementById('timestamp').value;
+      const buttonLabel = document.getElementById('buttonLabel').value;
+      const buttonURL = document.getElementById('buttonURL').value;
+
+      const webhookMessage = {
+        content: content,
+        username: username || undefined,
+        avatar_url: avatar || undefined,
+        embeds: [
+          {
+            title: title || undefined,
+            description: description || undefined,
+            color: parseInt(color.slice(1), 16), // Convertit la couleur hexadécimale en format numérique
+            timestamp: timestamp || undefined,
+            image: image_url ? { url: image_url } : undefined,
+            footer: {
+              text: "Webhook généré par votre outil"
+            },
+            actions: buttonLabel && buttonURL ? [{
+              type: 1,
+              label: buttonLabel,
+              url: buttonURL
+            }] : []
+          }
+        ]
+      };
+
+      // Affichage du JSON dans la section de sortie
+      const output = document.getElementById('output');
+      document.getElementById('jsonOutput').textContent = JSON.stringify(webhookMessage, null, 2);
+      output.style.display = 'block';
+    }
+
+    function sendWebhookMessage() {
+      const webhookURL = document.getElementById('webhookURL').value;
+      const content = document.getElementById('content').value;
+      const username = document.getElementById('username').value;
+      const avatar = document.getElementById('avatar').value;
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const image_url = document.getElementById('image_url').value;
+      const color = document.getElementById('color').value;
+      const timestamp = document.getElementById('timestamp').value;
+      const buttonLabel = document.getElementById('buttonLabel').value;
+      const buttonURL = document.getElementById('buttonURL').value;
+
+      const webhookMessage = {
+        content: content,
+        username: username || undefined,
+        avatar_url: avatar || undefined,
+        embeds: [
+          {
+            title: title || undefined,
+            description: description || undefined,
+            color: parseInt(color.slice(1), 16), // Convertit la couleur hexadécimale en format numérique
+            timestamp: timestamp || undefined,
+            image: image_url ? { url: image_url } : undefined,
+            footer: {
+              text: "Webhook généré par votre outil"
+            },
+            actions: buttonLabel && buttonURL ? [{
+              type: 1,
+              label: buttonLabel,
+              url: buttonURL
+            }] : []
+          }
+        ]
+      };
+
+      // Envoie du webhook
+      fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(webhookMessage),
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Message envoyé avec succès !');
+      })
+      .catch(error => {
+        alert('Erreur lors de l\'envoi du message : ' + error);
+      });
+    }
+  </script>
+
+</body>
+</html>
